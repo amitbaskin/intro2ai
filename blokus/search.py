@@ -51,29 +51,29 @@ class SearchProblem:
 
 
 def generic_search_pattern(problem, insertion_func):
-    def search(current_state):
-        legal_action_triplets = problem.get_successors(current_state)
-        insertion_func(fringe, legal_action_triplets, actions)
-        while fringe:
-            curr_actions, triplet = fringe.popleft()
-            if triplet[0] in visited_list:
-                continue
-            else:
-                visited_list.add(triplet[0])
-            if problem.is_goal_state(triplet[0]):
-                curr_actions.append(triplet[1])
-                return True, curr_actions
-            else:
-                curr_actions.append(triplet[1])
-                legal_action_triplets = problem.get_successors(triplet[0])
-                insertion_func(fringe, legal_action_triplets, curr_actions)
-
     fringe = deque()
-    actions = []  # List of steps we went through
     visited_list = set()
     start_state = problem.get_start_state()
+    steps = None
+
+    legal_action_triplets = problem.get_successors(start_state)
+    insertion_func(fringe, legal_action_triplets, [])
     visited_list.add(start_state)
-    _, steps = search(start_state)
+    while fringe:
+        curr_actions, triplet = fringe.popleft()
+        if triplet[0] in visited_list:
+            continue
+        else:
+            visited_list.add(triplet[0])
+        if problem.is_goal_state(triplet[0]):
+            curr_actions.append(triplet[1])
+            steps = curr_actions
+            break
+        else:
+            curr_actions.append(triplet[1])
+            legal_action_triplets = problem.get_successors(triplet[0])
+            insertion_func(fringe, legal_action_triplets, curr_actions)
+
     return steps
 
 
