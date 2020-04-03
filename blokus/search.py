@@ -52,7 +52,6 @@ class SearchProblem:
 
 class GraphNode:
     originator_node = None
-    neighbours = []
     state = None
     move = None
     cost = None
@@ -62,9 +61,6 @@ class GraphNode:
         self.state = state
         self.move = move
         self.cost = cost
-
-    def set_neighbours(self, neighbours):
-        self.neighbours = neighbours
 
 
 def graph_search_pattern(problem, insertion_func):
@@ -76,11 +72,7 @@ def graph_search_pattern(problem, insertion_func):
 
     legal_action_triplets = problem.get_successors(start_state)
 
-    # for triplet in legal_action_triplets:
-    #     fringe.append(GraphNode(start_node, triplet[0], triplet[1], triplet[2]))
     insertion_func(legal_action_triplets, fringe, start_node)
-
-    # insertion_func(fringe, legal_action_triplets, [])
     visited_list.add(start_state)
     while fringe:
         node = fringe.popleft()
@@ -98,8 +90,6 @@ def graph_search_pattern(problem, insertion_func):
             break
         else:
             legal_action_triplets = problem.get_successors(node.state)
-            # for triplet in legal_action_triplets:
-            #     fringe.append(GraphNode(node, triplet[0], triplet[1], triplet[2]))
             insertion_func(legal_action_triplets, fringe, node)
 
     return steps
