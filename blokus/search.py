@@ -93,7 +93,7 @@ def depth_first_search(problem):
     """
     def dfs_insertion_func(fringe, legal_action_triplets, prev_actions):
         for triplet in legal_action_triplets:
-            fringe.insert(-1, (prev_actions.copy(), triplet))
+            fringe.insert(0, (prev_actions.copy(), triplet))
 
     return generic_search_pattern(problem, dfs_insertion_func)
 
@@ -104,7 +104,7 @@ def breadth_first_search(problem):
     """
     def bfs_insertion_func(fringe, legal_action_triplets, prev_actions):
         for triplet in legal_action_triplets:
-            fringe.insert(0, (prev_actions.copy(), triplet))
+            fringe.insert(-1, (prev_actions.copy(), triplet))
 
     return generic_search_pattern(problem, bfs_insertion_func)
 
