@@ -3,6 +3,7 @@ In search.py, you will implement generic search algorithms
 """
 
 import util
+from collections import deque
 
 
 class SearchProblem:
@@ -49,6 +50,36 @@ class SearchProblem:
         util.raiseNotDefined()
 
 
+def generic_search_pattern(problem, insertion_func):
+    def recursive_search(current_state, fringe, actions):
+        legal_action_triplets = problem.get_successors(current_state)
+        insertion_func(fringe, legal_action_triplets, actions)
+        while fringe:
+            curr_actions, triplet = fringe.popleft()
+            if triplet[0] in visited_list:
+                continue
+            else:
+                visited_list.add(triplet[0])
+            if problem.is_goal_state(triplet[0]):
+                curr_actions.append(triplet[1])
+                return True, curr_actions
+            else:
+                curr_actions.append(triplet[1])
+                goal_reached, ret_actions = recursive_search(triplet[0], fringe, curr_actions)
+                if goal_reached:
+                    # steps.append(triplet[1])
+                    return goal_reached, ret_actions
+
+        return False, None
+
+    fringe = deque()
+    actions = []  # List of steps we went through
+    # steps = []  # List to output
+    visited_list = set()
+    start_state = problem.get_start_state()
+    visited_list.add(start_state)
+    _, steps = recursive_search(start_state, fringe, actions)
+    return steps
 
 
 def depth_first_search(problem):
@@ -65,16 +96,22 @@ def depth_first_search(problem):
     print("Is the start a goal?", problem.is_goal_state(problem.get_start_state()))
     print("Start's successors:", problem.get_successors(problem.get_start_state()))
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    def dfs_insertion_func(fringe, legal_action_triplets, prev_actions):
+        for triplet in legal_action_triplets:
+            fringe.insert(0, (prev_actions.copy(), triplet))
+
+    return generic_search_pattern(problem, dfs_insertion_func)
 
 
 def breadth_first_search(problem):
     """
     Search the shallowest nodes in the search tree first.
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    def bfs_insertion_func(fringe, legal_action_triplets, prev_actions):
+        for triplet in legal_action_triplets:
+            fringe.insert(0, (prev_actions.copy(), triplet))
+
+    return generic_search_pattern(problem, bfs_insertion_func)
 
 
 def uniform_cost_search(problem):
