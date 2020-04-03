@@ -50,6 +50,62 @@ class SearchProblem:
         util.raiseNotDefined()
 
 
+class GraphNode:
+    originator_node = None
+    neighbours = []
+    state = None
+    move = None
+    cost = None
+
+    def __init__(self, origin_node, state, move, cost):
+        self.originator_node = origin_node
+        self.state = state
+        self.move = move
+        self.cost = cost
+
+    def set_neighbours(self, neighbours):
+        self.neighbours = neighbours
+
+
+def graph_search_pattern(problem, insertion_func):
+    fringe = deque()
+    visited_list = set()
+    start_state = problem.get_start_state()
+    start_node = GraphNode(None, start_state, None, None)
+    steps = []
+
+    legal_action_triplets = problem.get_successors(start_state)
+
+    # for triplet in legal_action_triplets:
+    #     fringe.append(GraphNode(start_node, triplet[0], triplet[1], triplet[2]))
+    insertion_func(legal_action_triplets, fringe, start_node)
+
+    # insertion_func(fringe, legal_action_triplets, [])
+    visited_list.add(start_state)
+    while fringe:
+        node = fringe.popleft()
+        if node.state in visited_list:
+            continue
+        else:
+            visited_list.add(node.state)
+        if problem.is_goal_state(node.state):
+            # Get steps by going up the path to origin
+            curr_node = node
+            while curr_node.originator_node is not None:
+                steps.append(curr_node.move)
+                curr_node = curr_node.originator_node
+            steps.reverse()
+            break
+        else:
+            legal_action_triplets = problem.get_successors(node.state)
+            # for triplet in legal_action_triplets:
+            #     fringe.append(GraphNode(node, triplet[0], triplet[1], triplet[2]))
+            insertion_func(legal_action_triplets, fringe, node)
+
+    return steps
+
+
+
 def generic_search_pattern(problem, insertion_func):
     fringe = deque()
     visited_list = set()
@@ -91,22 +147,28 @@ def depth_first_search(problem):
     print("Is the start a goal?", problem.is_goal_state(problem.get_start_state()))
     print("Start's successors:", problem.get_successors(problem.get_start_state()))
     """
+    def dfs_graph_insertion_func(legal_action_triplets, fringe, curr_node):
+        for triplet in legal_action_triplets:
+            fringe.insert(0, GraphNode(curr_node, triplet[0], triplet[1], triplet[2]))
     def dfs_insertion_func(fringe, legal_action_triplets, prev_actions):
         for triplet in legal_action_triplets:
             fringe.insert(0, (prev_actions.copy(), triplet))
 
-    return generic_search_pattern(problem, dfs_insertion_func)
+    return graph_search_pattern(problem, dfs_graph_insertion_func)
 
 
 def breadth_first_search(problem):
     """
     Search the shallowest nodes in the search tree first.
     """
+    def bfs_graph_insertion_func(legal_action_triplets, fringe, curr_node):
+        for triplet in legal_action_triplets:
+            fringe.append(GraphNode(curr_node, triplet[0], triplet[1], triplet[2]))
     def bfs_insertion_func(fringe, legal_action_triplets, prev_actions):
         for triplet in legal_action_triplets:
             fringe.insert(-1, (prev_actions.copy(), triplet))
 
-    return generic_search_pattern(problem, bfs_insertion_func)
+    return generic_search_pattern(problem, bfs_graph_insertion_func)
 
 
 def uniform_cost_search(problem):
