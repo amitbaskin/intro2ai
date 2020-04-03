@@ -51,7 +51,7 @@ class SearchProblem:
 
 
 def generic_search_pattern(problem, insertion_func):
-    def recursive_search(current_state, fringe, actions):
+    def search(current_state):
         legal_action_triplets = problem.get_successors(current_state)
         insertion_func(fringe, legal_action_triplets, actions)
         while fringe:
@@ -65,20 +65,15 @@ def generic_search_pattern(problem, insertion_func):
                 return True, curr_actions
             else:
                 curr_actions.append(triplet[1])
-                goal_reached, ret_actions = recursive_search(triplet[0], fringe, curr_actions)
-                if goal_reached:
-                    # steps.append(triplet[1])
-                    return goal_reached, ret_actions
-
-        return False, None
+                legal_action_triplets = problem.get_successors(triplet[0])
+                insertion_func(fringe, legal_action_triplets, curr_actions)
 
     fringe = deque()
     actions = []  # List of steps we went through
-    # steps = []  # List to output
     visited_list = set()
     start_state = problem.get_start_state()
     visited_list.add(start_state)
-    _, steps = recursive_search(start_state, fringe, actions)
+    _, steps = search(start_state)
     return steps
 
 
@@ -98,7 +93,7 @@ def depth_first_search(problem):
     """
     def dfs_insertion_func(fringe, legal_action_triplets, prev_actions):
         for triplet in legal_action_triplets:
-            fringe.insert(0, (prev_actions.copy(), triplet))
+            fringe.insert(-1, (prev_actions.copy(), triplet))
 
     return generic_search_pattern(problem, dfs_insertion_func)
 
