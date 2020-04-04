@@ -155,7 +155,7 @@ def breadth_first_search(problem):
     Search the shallowest nodes in the search tree first.
     """
 
-    def bfs_graph_insertion_func(legal_action_triplets, curr_fringe, curr_node):
+    def bfs_insertion_func(legal_action_triplets, curr_fringe, curr_node):
         for triplet in legal_action_triplets:
             curr_fringe.append(GraphNode(curr_node, triplet[0], triplet[1], triplet[2]))
 
@@ -163,7 +163,7 @@ def breadth_first_search(problem):
         return curr_fringe.popleft()
 
     fringe = deque()
-    return graph_search_pattern(fringe, problem, bfs_graph_insertion_func, bfs_getter_func)
+    return graph_search_pattern(fringe, problem, bfs_insertion_func, bfs_getter_func)
 
 
 def uniform_cost_search(problem):
