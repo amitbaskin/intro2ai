@@ -62,6 +62,16 @@ class GraphNode:
         self.move = move
         self.cost = cost
 
+    def get_moves(self):
+        # Get steps by going up the path to origin
+        steps = []
+        curr_node = self
+        while curr_node.originator_node is not None:
+            steps.append(curr_node.move)
+            curr_node = curr_node.originator_node
+        steps.reverse()
+        return steps
+
 
 def graph_search_pattern(problem, insertion_func):
     fringe = deque()
@@ -81,12 +91,7 @@ def graph_search_pattern(problem, insertion_func):
         else:
             visited_list.add(node.state)
         if problem.is_goal_state(node.state):
-            # Get steps by going up the path to origin
-            curr_node = node
-            while curr_node.originator_node is not None:
-                steps.append(curr_node.move)
-                curr_node = curr_node.originator_node
-            steps.reverse()
+            steps = node.get_moves()
             break
         else:
             legal_action_triplets = problem.get_successors(node.state)
@@ -158,7 +163,7 @@ def breadth_first_search(problem):
         for triplet in legal_action_triplets:
             fringe.insert(-1, (prev_actions.copy(), triplet))
 
-    return generic_search_pattern(problem, bfs_graph_insertion_func)
+    return graph_search_pattern(problem, bfs_graph_insertion_func)
 
 
 def uniform_cost_search(problem):
