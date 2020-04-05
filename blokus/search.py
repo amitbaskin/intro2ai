@@ -142,12 +142,12 @@ def depth_first_search(problem):
 
     def dfs_insertion_func(legal_action_triplets, curr_fringe, curr_node):
         for triplet in legal_action_triplets:
-            curr_fringe.insert(0, GraphNode(curr_node, triplet[0], triplet[1], triplet[2]))
+            curr_fringe.push(GraphNode(curr_node, triplet[0], triplet[1], triplet[2]))
 
     def dfs_getter_func(curr_fringe):
-        return curr_fringe.popleft()
+        return curr_fringe.pop()
 
-    fringe = deque()
+    fringe = util.Stack()
     return graph_search_pattern(fringe, problem, dfs_insertion_func, dfs_getter_func)
 
 
@@ -158,12 +158,12 @@ def breadth_first_search(problem):
 
     def bfs_insertion_func(legal_action_triplets, curr_fringe, curr_node):
         for triplet in legal_action_triplets:
-            curr_fringe.append(GraphNode(curr_node, triplet[0], triplet[1], triplet[2]))
+            curr_fringe.push(GraphNode(curr_node, triplet[0], triplet[1], triplet[2]))
 
     def bfs_getter_func(curr_fringe):
-        return curr_fringe.popleft()
+        return curr_fringe.pop()
 
-    fringe = deque()
+    fringe = util.Queue()
     return graph_search_pattern(fringe, problem, bfs_insertion_func, bfs_getter_func)
 
 
@@ -173,13 +173,15 @@ def uniform_cost_search(problem):
     """
     def uniform_insertion_func(legal_action_triplets, curr_fringe, curr_node):
         for triplet in legal_action_triplets:
-            new_node = GraphNode(curr_node, triplet[0], triplet[1], triplet[2])
-            curr_fringe.push(new_node, new_node.cost_so_far)
+            curr_fringe.push(GraphNode(curr_node, triplet[0], triplet[1], triplet[2]))
 
     def uniform_getter_func(curr_fringe):
         return curr_fringe.pop()
 
-    fringe_queue = util.PriorityQueue()
+    def priority_func(item):
+        return item.cost_so_far
+
+    fringe_queue = util.PriorityQueueWithFunction(priority_func)
     return graph_search_pattern(fringe_queue, problem, uniform_insertion_func, uniform_getter_func)
 
 
@@ -189,14 +191,16 @@ def a_star_search(problem, heuristic=null_heuristic):
     """
     def astar_insertion_func(legal_action_triplets, curr_fringe, curr_node):
         for triplet in legal_action_triplets:
-            new_node = GraphNode(curr_node, triplet[0], triplet[1], triplet[2],
-                                 heuristic_cost=heuristic(curr_node.state, problem))
-            curr_fringe.push(new_node, new_node.astar_cost)
+            curr_fringe.push(GraphNode(curr_node, triplet[0], triplet[1], triplet[2],
+                             heuristic_cost=heuristic(curr_node.state, problem)))
 
     def astar_getter_func(curr_fringe):
         return curr_fringe.pop()
 
-    fringe_queue = util.PriorityQueue()
+    def priority_func(item):
+        return item.astar_cost
+
+    fringe_queue = util.PriorityQueueWithFunction(priority_func)
     return graph_search_pattern(fringe_queue, problem, astar_insertion_func, astar_getter_func, heuristic)
 
 
