@@ -66,6 +66,7 @@ class GraphNode:
         self.cost = cost
         self.heuristic_cost = heuristic_cost
         self.cost_so_far = self.originator_node.cost_so_far + cost if self.originator_node is not None else cost
+        self.astar_cost = self.cost_so_far + heuristic_cost
 
     def get_moves(self):
         # Get steps by going up the path to origin
@@ -170,24 +171,32 @@ def uniform_cost_search(problem):
     """
     Search the node of least total cost first.
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    def uniform_insertion_func(legal_action_triplets, curr_fringe, curr_node):
+        for triplet in legal_action_triplets:
+            new_node = GraphNode(curr_node, triplet[0], triplet[1], triplet[2])
+            curr_fringe.push(new_node, new_node.cost_so_far)
+
+    def uniform_getter_func(curr_fringe):
+        return curr_fringe.pop()
+
+    fringe_queue = util.PriorityQueue()
+    return graph_search_pattern(fringe_queue, problem, uniform_insertion_func, uniform_getter_func)
 
 
 def a_star_search(problem, heuristic=null_heuristic):
     """
     Search the node that has the lowest combined cost and heuristic first.
     """
-
     def astar_insertion_func(legal_action_triplets, curr_fringe, curr_node):
         for triplet in legal_action_triplets:
-            curr_fringe.put(GraphNode(curr_node, triplet[0], triplet[1], triplet[2],
-                                      heuristic_cost=heuristic(curr_node.state, problem)))
+            new_node = GraphNode(curr_node, triplet[0], triplet[1], triplet[2],
+                                 heuristic_cost=heuristic(curr_node.state, problem))
+            curr_fringe.push(new_node, new_node.astar_cost)
 
     def astar_getter_func(curr_fringe):
-        return curr_fringe.get()
+        return curr_fringe.pop()
 
-    fringe_queue = PriorityQueue()
+    fringe_queue = util.PriorityQueue()
     return graph_search_pattern(fringe_queue, problem, astar_insertion_func, astar_getter_func, heuristic)
 
 

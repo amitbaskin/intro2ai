@@ -57,7 +57,11 @@ class BlokusFillProblem(SearchProblem):
 class BlokusCornersProblem(SearchProblem):
     def __init__(self, board_w, board_h, piece_list, starting_point=(0, 0)):
         self.expanded = 0
-        "*** YOUR CODE HERE ***"
+        self.board_w = board_w
+        self.board_h = board_h
+        self.piece_list = piece_list
+        self.starting_point = starting_point
+        self.board = Board(board_w, board_h, 1, piece_list, starting_point=(0, 0))
 
     def get_start_state(self):
         """
@@ -66,8 +70,11 @@ class BlokusCornersProblem(SearchProblem):
         return self.board
 
     def is_goal_state(self, state):
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        upper_left = state.state.item((0, self.board_h-1))
+        upper_right = state.state.item((self.board_w-1, self.board_h-1))
+        down_right = state.state.item((self.board_w-1, 0))
+        condition = upper_left != -1 and upper_right != -1 and down_right != -1
+        return condition
 
     def get_successors(self, state):
         """
@@ -90,8 +97,25 @@ class BlokusCornersProblem(SearchProblem):
         This method returns the total cost of a particular sequence of actions.  The sequence must
         be composed of legal moves
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        def count_empty_tiles(board):
+            empty_tiles_amount = 0
+            for row in board.state:
+                for entry in row:
+                    if entry == -1:
+                        empty_tiles_amount += 1
+            return empty_tiles_amount
+
+        def action_cost(board, act):
+            empty_tiles_before_action = count_empty_tiles(board)
+            board.do_move(0, act)
+            empty_tiles_after_action = count_empty_tiles(board)
+            return empty_tiles_before_action - empty_tiles_after_action
+
+        new_board = Board(self.board_w, self.board_h, 1, self.piece_list, starting_point=(0, 0))
+        total_cost = 0
+        for action in actions:
+            total_cost += action_cost(new_board, action)
+        return total_cost
 
 
 def blokus_corners_heuristic(state, problem):
