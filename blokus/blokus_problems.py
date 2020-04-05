@@ -97,25 +97,17 @@ class BlokusCornersProblem(SearchProblem):
         This method returns the total cost of a particular sequence of actions.  The sequence must
         be composed of legal moves
         """
-        def count_empty_tiles(board):
-            empty_tiles_amount = 0
-            for row in board.state:
-                for entry in row:
-                    if entry == -1:
-                        empty_tiles_amount += 1
-            return empty_tiles_amount
-
-        def action_cost(board, act):
-            empty_tiles_before_action = count_empty_tiles(board)
-            board.do_move(0, act)
-            empty_tiles_after_action = count_empty_tiles(board)
-            return empty_tiles_before_action - empty_tiles_after_action
-
         new_board = Board(self.board_w, self.board_h, 1, self.piece_list, starting_point=(0, 0))
-        total_cost = 0
         for action in actions:
-            total_cost += action_cost(new_board, action)
-        return total_cost
+            new_board.do_move(0, action)
+
+        played_tiles_amount = 0
+        for row in new_board.state:
+            for entry in row:
+                if entry != -1:
+                    played_tiles_amount += 1
+
+        return played_tiles_amount
 
 
 def blokus_corners_heuristic(state, problem):
