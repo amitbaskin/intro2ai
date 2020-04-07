@@ -3,8 +3,6 @@ In search.py, you will implement generic search algorithms
 """
 
 import util
-from collections import deque
-from queue import PriorityQueue
 
 
 class SearchProblem:
@@ -58,6 +56,7 @@ class GraphNode:
     cost = 0
     heuristic_cost = 1
     cost_so_far = 0
+    astar_cost = 0
 
     def __init__(self, origin_node, state, move, cost, heuristic_cost=1):
         self.originator_node = origin_node
@@ -99,30 +98,26 @@ def null_heuristic(state, problem=None):
     return 0
 
 
-def graph_search_pattern(fringe, problem, insertion_func, getter_func, heuristic=null_heuristic):
-    visited_list = set()
+def graph_search_pattern(fringe, problem, insertion_func, getter_func, check_func, cost_func, heuristic=null_heuristic):
+    visited_list = dict()
     start_state = problem.get_start_state()
     start_node = GraphNode(None, start_state, None, 0, heuristic(start_state, problem))
-    steps = []
 
-    legal_action_triplets = problem.get_successors(start_node.state)
-
-    insertion_func(legal_action_triplets, fringe, start_node)
-    visited_list.add(start_state)
+    insertion_func(problem.get_successors(start_node.state), fringe, start_node)
+    visited_list[start_state] = 0
     while fringe:
         node = getter_func(fringe)
-        if node.state in visited_list:
+        # Allows further search if got to state with less cost. Uses the state itself as the key.
+        if check_func(node, visited_list):
             continue
         else:
-            visited_list.add(node.state)
+            visited_list[node.state] = cost_func(node)
         if problem.is_goal_state(node.state):
-            steps = node.get_moves()
-            break
+            return node.get_moves()
         else:
-            legal_action_triplets = problem.get_successors(node.state)
-            insertion_func(legal_action_triplets, fringe, node)
+            insertion_func(problem.get_successors(node.state), fringe, node)
 
-    return steps
+    return []
 
 
 def depth_first_search(problem):
@@ -147,8 +142,14 @@ def depth_first_search(problem):
     def dfs_getter_func(curr_fringe):
         return curr_fringe.pop()
 
+    def dfs_check_func(node, visited_list):
+        return node.state in visited_list.keys()
+
+    def dfs_cost_func(node):
+        return node.cost
+
     fringe = util.Stack()
-    return graph_search_pattern(fringe, problem, dfs_insertion_func, dfs_getter_func)
+    return graph_search_pattern(fringe, problem, dfs_insertion_func, dfs_getter_func, dfs_check_func, dfs_cost_func)
 
 
 def breadth_first_search(problem):
@@ -163,8 +164,14 @@ def breadth_first_search(problem):
     def bfs_getter_func(curr_fringe):
         return curr_fringe.pop()
 
+    def bfs_check_func(node, visited_list):
+        return node.state in visited_list.keys()
+
+    def bfs_cost_func(node):
+        return node.cost
+
     fringe = util.Queue()
-    return graph_search_pattern(fringe, problem, bfs_insertion_func, bfs_getter_func)
+    return graph_search_pattern(fringe, problem, bfs_insertion_func, bfs_getter_func, bfs_check_func, bfs_cost_func)
 
 
 def uniform_cost_search(problem):
@@ -178,11 +185,15 @@ def uniform_cost_search(problem):
     def uniform_getter_func(curr_fringe):
         return curr_fringe.pop()
 
-    def priority_func(item):
-        return item.cost_so_far
+    def ucs_check_func(node, visited_list):
+        return node.state in visited_list.keys() and visited_list[node.state] <= node.cost_so_far
 
-    fringe_queue = util.PriorityQueueWithFunction(priority_func)
-    return graph_search_pattern(fringe_queue, problem, uniform_insertion_func, uniform_getter_func)
+    def ucs_cost_func(node):
+        return node.cost_so_far
+
+    fringe_queue = util.PriorityQueueWithFunction(lambda x: x.cost_so_far)
+    return graph_search_pattern(fringe_queue, problem, uniform_insertion_func, uniform_getter_func, ucs_check_func,
+                                ucs_cost_func)
 
 
 def a_star_search(problem, heuristic=null_heuristic):
@@ -192,16 +203,20 @@ def a_star_search(problem, heuristic=null_heuristic):
     def astar_insertion_func(legal_action_triplets, curr_fringe, curr_node):
         for triplet in legal_action_triplets:
             curr_fringe.push(GraphNode(curr_node, triplet[0], triplet[1], triplet[2],
-                             heuristic_cost=heuristic(curr_node.state, problem)))
+                             heuristic_cost=heuristic(triplet[0], problem)))
 
     def astar_getter_func(curr_fringe):
         return curr_fringe.pop()
 
-    def priority_func(item):
-        return item.astar_cost
+    def astar_check_func(node, visited_list):
+        return node.state in visited_list.keys() #and visited_list[node.state] <= node.astar_cost
 
-    fringe_queue = util.PriorityQueueWithFunction(priority_func)
-    return graph_search_pattern(fringe_queue, problem, astar_insertion_func, astar_getter_func, heuristic)
+    def astar_cost_func(node):
+        return node.astar_cost
+
+    fringe_queue = util.PriorityQueueWithFunction(lambda x: x.astar_cost)
+    return graph_search_pattern(fringe_queue, problem, astar_insertion_func, astar_getter_func, astar_check_func,
+                                astar_cost_func, heuristic)
 
 
 # Abbreviations

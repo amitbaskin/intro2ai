@@ -1,6 +1,7 @@
 from board import Board
 from search import SearchProblem, ucs
 import util
+import numpy as np
 
 
 class BlokusFillProblem(SearchProblem):
@@ -61,7 +62,8 @@ class BlokusCornersProblem(SearchProblem):
         self.board_h = board_h
         self.piece_list = piece_list
         self.starting_point = starting_point
-        self.board = Board(board_w, board_h, 1, piece_list, starting_point=(0, 0))
+        self.board = Board(board_w, board_h, 1, piece_list, starting_point=self.starting_point)
+        self.seen_states = dict()
 
     def get_start_state(self):
         """
@@ -97,17 +99,17 @@ class BlokusCornersProblem(SearchProblem):
         This method returns the total cost of a particular sequence of actions.  The sequence must
         be composed of legal moves
         """
-        new_board = Board(self.board_w, self.board_h, 1, self.piece_list, starting_point=(0, 0))
+        new_board = Board(self.board_w, self.board_h, 1, self.piece_list, starting_point=self.starting_point)
         for action in actions:
             new_board.do_move(0, action)
 
-        played_tiles_amount = 0
-        for row in new_board.state:
-            for entry in row:
-                if entry != -1:
-                    played_tiles_amount += 1
+        return np.sum((new_board.state != -1).astype(np.int))
 
-        return played_tiles_amount
+
+def euclidean_distance(point1, point2):
+    # return np.floor(np.abs(np.array(point1) - np.array(point2)).sum() / 2)
+    # return np.linalg.norm(np.array(point1) - np.array(point2)) / np.sqrt(2)
+    return np.linalg.norm(np.array(point1) - np.array(point2))
 
 
 def blokus_corners_heuristic(state, problem):
@@ -122,15 +124,100 @@ def blokus_corners_heuristic(state, problem):
     your heuristic is *not* consistent, and probably not admissible!  On the other hand,
     inadmissible or inconsistent heuristics may find optimal solutions, so be careful.
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    if state in problem.seen_states:
+        return problem.seen_states[state]
+
+    goal_corners = []
+    if state.state[state.board_h - 1, 0] == -1:
+        goal_corners.append((state.board_h - 1, 0))
+    if state.state[0, state.board_w - 1] == -1:
+        goal_corners.append((0, state.board_w - 1))
+    if state.state[state.board_h - 1, state.board_w - 1] == -1:
+        goal_corners.append((state.board_h - 1, state.board_w - 1))
+    if goal_corners.count == 0:
+        return 0
+
+    legal_corners = set()
+
+    if np.all(state.state == -1):
+        legal_corners.add((0, 0))
+    else:
+        for y in range(state.board_h):
+            for x in range(state.board_w):
+                if state.check_tile_attached(0, x, y) and state.check_tile_legal(0, x, y):
+                    legal_corners.add((y, x))
+
+    min_dist = np.inf
+    #
+    # closest_point_pairs = dict()
+    # closest_point_dist = dict()
+    # for goal_corner in goal_corners:
+    #     closest_point_pairs[goal_corner] = None
+    #     closest_point_dist[goal_corner] = np.inf
+    #
+    # for legal_corner in legal_corners:
+    #     for goal_corner in goal_corners:
+    #         dist = euclidean_distance(np.array(legal_corner), np.array(goal_corner))
+    #         if dist < closest_point_dist[goal_corner]:
+    #             closest_point_dist[goal_corner] = dist
+    #             closest_point_pairs[goal_corner] = legal_corner
+    #
+    # dist = 0
+    # for min_dist in closest_point_dist.values():
+    #     dist += min_dist
+
+    for legal_corner in legal_corners:
+        # max_dist = 0
+        # farthest_corner = None
+        # for goal_corner in goal_corners:
+        #     dist = euclidean_distance(legal_corner, np.array(goal_corner))
+        #     if dist > max_dist:
+        #         max_dist = dist
+        #         farthest_corner = np.array(goal_corner)
+        #
+        # goal_corners_trimmed = []
+        # for goal_corner in goal_corners:
+        #     if not np.array_equal(goal_corner, farthest_corner):
+        #         goal_corners_trimmed.append(goal_corner)
+        #
+        # curr_dist = max_dist
+        # vec = farthest_corner - legal_corner
+        # vec = vec / np.linalg.norm(vec, 2)
+        # for goal_corner in goal_corners_trimmed:
+        #     projection = np.floor(legal_corner + vec * np.dot(goal_corner - legal_corner, vec))
+        #     # print(projection)
+        #     curr_dist += euclidean_distance(projection, goal_corner)
+        #
+        # if max_dist < min_dist:
+        #     min_dist = max_dist
+
+        # all_dist = 0
+        # for goal_corner in goal_corners:
+        #     all_dist += np.round(euclidean_distance(goal_corner, legal_corner))
+        # if all_dist < min_dist:
+        #     min_dist = all_dist
+
+        all_dist = 0
+        for goal_corner in goal_corners:
+            all_dist += util.manhattanDistance(goal_corner, legal_corner)
+        if all_dist < min_dist:
+            min_dist = all_dist
+
+    print(min_dist / len(goal_corners))
+    problem.seen_states[state] = min_dist / len(goal_corners)
+    return min_dist / len(goal_corners)
 
 
 class BlokusCoverProblem(SearchProblem):
     def __init__(self, board_w, board_h, piece_list, starting_point=(0, 0), targets=[(0, 0)]):
         self.targets = targets.copy()
         self.expanded = 0
-        "*** YOUR CODE HERE ***"
+        self.board_w = board_w
+        self.board_h = board_h
+        self.piece_list = piece_list
+        self.starting_point = starting_point
+        self.board = Board(board_w, board_h, 1, piece_list, starting_point=self.starting_point)
+        self.seen_states = dict()
 
     def get_start_state(self):
         """
@@ -139,8 +226,10 @@ class BlokusCoverProblem(SearchProblem):
         return self.board
 
     def is_goal_state(self, state):
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        done = True
+        for target in self.targets:
+            done &= (state.state.item(target) != -1)
+        return done
 
     def get_successors(self, state):
         """
@@ -163,13 +252,44 @@ class BlokusCoverProblem(SearchProblem):
         This method returns the total cost of a particular sequence of actions.  The sequence must
         be composed of legal moves
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        new_board = Board(self.board_w, self.board_h, 1, self.piece_list, starting_point=self.starting_point)
+        for action in actions:
+            new_board.do_move(0, action)
+
+        return np.sum((new_board.state != -1).astype(np.int))
 
 
 def blokus_cover_heuristic(state, problem):
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    if state in problem.seen_states:
+        return problem.seen_states[state]
+
+    goals = []
+    for target in problem.targets:
+        if state.state.item(target) == -1:
+            goals.append(target)
+
+    legal_corners = set()
+
+    if np.all(state.state == -1):
+        legal_corners.add((0, 0))
+    else:
+        for y in range(state.board_h):
+            for x in range(state.board_w):
+                if state.check_tile_attached(0, x, y) and state.check_tile_legal(0, x, y):
+                    legal_corners.add((y, x))
+
+    min_dist = np.inf
+
+    for legal_corner in legal_corners:
+        all_dist = 0
+        for goal_corner in goals:
+            all_dist += util.manhattanDistance(goal_corner, legal_corner)
+        if all_dist < min_dist:
+            min_dist = all_dist
+
+    print(min_dist / len(goals))
+    problem.seen_states[state] = min_dist
+    return min_dist / len(goals)
 
 
 class ClosestLocationSearch:
