@@ -53,28 +53,29 @@ class BlokusFillProblem(SearchProblem):
         return len(actions)
 
 
-#####################################################
-# This portion is incomplete.  Time to write code!  #
-#####################################################
-def get_corners(problem):
-    return [(0, problem.board_w-1), (problem.board_h-1, 0),
-             (problem.board_h-1, problem.board_w-1)]
+def get_target_corners(problem):
+    target_corners = [(0, 0), (0, problem.board_w - 1),
+                      (problem.board_h - 1, 0),
+                      (problem.board_h - 1, problem.board_w - 1)]
+    if problem.starting_point in target_corners:
+        target_corners.remove(problem.starting_point)
+    return target_corners
 
 
-def get_forbidden_adjacents(problem, pos):
-    adjacents = [(pos[0]-1, pos[1]), (pos[0]+1, pos[1]),
-                           (pos[0], pos[1]+1), (pos[0], pos[1]-1)]
-    forbidden_adjacents = []
-    for adjacent in adjacents:
-        if problem.board.check_tile_legal(0, adjacent[0], adjacent[1]):
-            forbidden_adjacents.append(adjacent)
-    return forbidden_adjacents
+def get_forbidden_adjacent_positions(problem, pos):
+    adjacent_positions = [(pos[0] - 1, pos[1]), (pos[0] + 1, pos[1]),
+                          (pos[0], pos[1] + 1), (pos[0], pos[1] - 1)]
+    forbidden_adjacent_positions = []
+    for pos in adjacent_positions:
+        if problem.board.check_tile_legal(0, pos[0], pos[1]):
+            forbidden_adjacent_positions.append(pos)
+    return forbidden_adjacent_positions
 
 
 def get_total_forbidden_positions(state, problem):
     forbidden_positions = []
     for target in get_current_targets(state, problem):
-        forbidden_positions += get_forbidden_adjacents(problem, target)
+        forbidden_positions += get_forbidden_adjacent_positions(problem, target)
     return forbidden_positions
 
 
@@ -100,14 +101,14 @@ def get_distance_between_positions(pos1, pos2):
 
 
 def get_current_targets(state, problem):
-    current_corners = []
+    current_targets = []
     for target in problem.targets:
         if state.state.item(target) == -1:
-            current_corners.append(target)
-    return current_corners
+            current_targets.append(target)
+    return current_targets
 
 
-def get_min_dist_from_goal(state, problem, goal):
+def get_min_dist_from_target(state, problem, target):
     played_positions = []
     for row_num in range(problem.board_h):
         for column_num in range(problem.board_w):
@@ -116,7 +117,7 @@ def get_min_dist_from_goal(state, problem, goal):
                 played_positions.append((row_num, column_num))
     min_dist = np.inf
     for pos in played_positions:
-        cur_dist = get_distance_between_positions(pos, goal)
+        cur_dist = get_distance_between_positions(pos, target)
         if cur_dist < min_dist:
             min_dist = cur_dist
     return min_dist
@@ -124,17 +125,100 @@ def get_min_dist_from_goal(state, problem, goal):
 
 def get_sum_distances_from_targets(state, problem):
     sm = 0
-    cur_goals = get_current_targets(state, problem)
-    len_cur_goals = len(cur_goals)
-    # print(len_cur_goals)
-    # print(state)
+    cur_targets = get_current_targets(state, problem)
+    len_cur_goals = len(cur_targets)
     if len_cur_goals == 0:
         return 0
     else:
-        for corner in cur_goals:
-            sm += get_min_dist_from_goal(state, problem, corner)
-        # print(sm)
+        for corner in cur_targets:
+            sm += get_min_dist_from_target(state, problem, corner)
         return sm
+
+
+def get_cost_of_actions_helper(actions, board_w, board_h, piece_list,
+                               starting_point):
+    """
+    actions: A list of actions to take
+
+    This method returns the total cost of a particular sequence of actions.
+    The sequence must
+    be composed of legal moves
+    """
+    new_board = Board(board_w, board_h, 1, piece_list,
+                      starting_point)
+    for action in actions:
+        new_board.do_move(0, action)
+    return np.sum((new_board.state != -1).astype(np.int))
+
+
+def get_diagonal_positions(pos, board):
+    x = pos[0]
+    y = pos[1]
+    diag_pos = [(x + 1, y + 1), (x - 1, y + 1), (x + 1, y - 1), (x - 1, y - 1)]
+    return [pos for pos in diag_pos if board.check_tile_legal(0, pos)]
+
+
+def get_played_positions(board):
+    return np.argwhere(board.state != -1)
+
+
+def get_legal_diagonal_positions(board):
+    played_positions = get_played_positions(board)
+    diagonal_positions = {}
+    for pos in played_positions:
+        pos_tup = (pos[0], pos[1])
+        diagonal_positions += get_diagonal_positions(pos_tup, board)
+    return diagonal_positions
+
+
+def get_updated_board(board_w, board_h, piece_list, board, position):
+    board_state = board.state
+    new_board = Board(board_w, board_h, 1, piece_list, position)
+    new_board.state = board_state
+    return new_board
+
+
+def get_position_moves(board_w, board_h, piece_list, target):
+    board = Board(board_w, board_h, 1, piece_list, target)
+    return board.get_legal_moves(0)
+
+
+def get_board_filled_targets(board_w, board_h, piece_list, board,
+                             targets_moves):
+    cur_board = board
+    for target_move in targets_moves:
+        cur_board = get_updated_board(board_w, board_h, piece_list, cur_board,
+                                      target_move[0])
+        cur_board.do_move(0, target_move[1])
+    return cur_board
+
+
+def generate_target_set(board, board_w, board_h, piece_list, target, move):
+    new_board = get_updated_board(board_w, board_h, piece_list,
+                                  board, target)
+    new_board.do_move(0, move)
+    return get_legal_diagonal_positions(board)
+
+
+def get_targets_sets(board, board_w, board_h, piece_list, targets_moves):
+    targets_sets = []
+    for target_move in targets_moves:
+        targets_sets.append(
+            TargetSet(board, board_w, board_h, piece_list, target_move[0],
+                      target_move[1]))
+    return targets_sets
+
+
+class TargetSet:
+    def __init__(self, board, board_w, board_h, piece_list, target, move):
+        self.target_set = generate_target_set(board, board_w, board_h,
+                                              piece_list, target, move)
+
+    def get_distance_from_target_set(self, board, problem):
+        distances = []
+        for target in self.target_set:
+            distances.append(get_min_dist_from_target(board, problem, target))
+        return min(distances)
 
 
 class BlokusCornersProblem(SearchProblem):
@@ -144,10 +228,8 @@ class BlokusCornersProblem(SearchProblem):
         self.board_h = board_h
         self.piece_list = piece_list
         self.starting_point = starting_point
-        self.board = Board(board_w, board_h, 1, piece_list,
-                           starting_point=self.starting_point)
-        self.seen_states = dict()
-        self.targets = get_corners(self)
+        self.board = Board(board_w, board_h, 1, piece_list, self.starting_point)
+        self.targets = get_target_corners(self)
 
     def get_start_state(self):
         """
@@ -156,11 +238,10 @@ class BlokusCornersProblem(SearchProblem):
         return self.board
 
     def is_goal_state(self, state):
-        upper_left = state.state.item((0, self.board_h-1))
-        upper_right = state.state.item((self.board_w-1, self.board_h-1))
-        down_right = state.state.item((self.board_w-1, 0))
-        condition = upper_left != -1 and upper_right != -1 and down_right != -1
-        return condition
+        if len(get_current_targets(state, self)) == 0:
+            return True
+        else:
+            return False
 
     def get_successors(self, state):
         """
@@ -182,14 +263,12 @@ class BlokusCornersProblem(SearchProblem):
         actions: A list of actions to take
 
         This method returns the total cost of a particular sequence of actions.
-        The sequence must be composed of legal moves
+        The sequence must
+        be composed of legal moves
         """
-        new_board = Board(self.board_w, self.board_h, 1, self.piece_list,
-                          starting_point=self.starting_point)
-        for action in actions:
-            new_board.do_move(0, action)
-
-        return np.sum((new_board.state != -1).astype(np.int))
+        return get_cost_of_actions_helper(actions, self.board_w,
+                                          self.board_h, self.piece_list,
+                                          self.starting_point)
 
 
 def blokus_corners_heuristic(state, problem):
@@ -217,9 +296,7 @@ class BlokusCoverProblem(SearchProblem):
         self.board_h = board_h
         self.piece_list = piece_list
         self.starting_point = starting_point
-        self.board = Board(board_w, board_h, 1, piece_list,
-                           starting_point=self.starting_point)
-        self.seen_states = dict()
+        self.board = Board(board_w, board_h, 1, piece_list, self.starting_point)
 
     def get_start_state(self):
         """
@@ -256,12 +333,9 @@ class BlokusCoverProblem(SearchProblem):
         The sequence must
         be composed of legal moves
         """
-        new_board = Board(self.board_w, self.board_h, 1, self.piece_list,
-                          starting_point=self.starting_point)
-        for action in actions:
-            new_board.do_move(0, action)
-
-        return np.sum((new_board.state != -1).astype(np.int))
+        return get_cost_of_actions_helper(actions, self.board_w,
+                                          self.board_h, self.piece_list,
+                                          self.starting_point)
 
 
 def blokus_cover_heuristic(state, problem):
@@ -310,7 +384,6 @@ class ClosestLocationSearch:
         """
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
-
 
 
 class MiniContestSearch:

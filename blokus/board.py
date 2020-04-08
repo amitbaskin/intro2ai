@@ -178,7 +178,8 @@ class Board:
         return self.scores[player]
 
     def __eq__(self, other):
-        return np.array_equal(self.state, other.state) and np.array_equal(self.pieces, other.pieces)
+        return np.array_equal(self.state, other.state) and np.array_equal(
+            self.pieces, other.pieces)
 
     def __hash__(self):
         return hash(str(self.state))
