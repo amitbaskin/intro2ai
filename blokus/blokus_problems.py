@@ -3,6 +3,10 @@ from search import SearchProblem, ucs
 import util
 import numpy as np
 import math
+from scipy.ndimage.measurements import label
+from scipy.ndimage.morphology import generate_binary_structure
+from scipy.spatial.distance import cdist
+from scipy.spatial import distance
 
 
 class BlokusFillProblem(SearchProblem):
@@ -81,9 +85,8 @@ class GeneralizedTarget:
     list of positions which constitute the generalized target.
     """
 
-    def __init__(self, target):
-        self.targets = [target]
-        self.original_target = target
+    def __init__(self, targets):
+        self.targets = targets
 
     def get_distance(self, board, positions):
         """
@@ -176,10 +179,9 @@ def attach_move_to_generalized_targets(move, generalized_board):
     """
     Adds the covered positions of the given move to the generalized targets
     which it is attached to.
+    :param generalized_board:
     :param move: The given move to add its covered positions to the
     generalized targets which it is attached to
-    :param problem: The problem of which we want to check its generalized
-    targets whether the covered positions of the given moves are attached to
     :return: null
     """
     move_positions = get_move_positions(move)
@@ -215,7 +217,12 @@ def get_played_positions(board):
     :return: A numpy array in which every sub-array contains two integers,
     one for each coordinate of a position
     """
-    return np.argwhere(board.state != -1)
+    array = np.argwhere(board.state != -1)
+    lst = array.tolist()
+    new_lst = []
+    for pos in lst:
+        new_lst.append(tuple(pos))
+    return new_lst
 
 
 def get_diagonal_positions(pos, board):
@@ -284,35 +291,31 @@ def get_target_corners(board, problem):
                       (board.board_h - 1, 0),
                       (board.board_h - 1, board.board_w - 1)]
     if problem.starting_point in target_corners:
-        target_corners.remove(board.starting_point)
+        target_corners.remove(problem.starting_point)
     return target_corners
 
 
-def get_forbidden_adjacent_positions(problem, target_position):
-    """
-    Given a target position which is played, we want to forbid playing the
-    legal adjacent positions to it because if such position would be played
-    then according to the rules of the Blokus game, it would be impossible to
-    play the target position and so we would be in a losing state and waste
-    our computation until we would realize that this is a losing state,
-    so we want to prevent this the instant we can be aware of it which is
-    when an adjacent position to a target position is played.
-    :param problem: The corner problem we want to solve
-    :param target_position: The target position we want to forbid playing
-    the adjacent positions to it
-    :return: The adjacent positions to the given target position, which are
-    legal positions to play
-    """
-    adjacent_positions = [(target_position[0] - 1, target_position[1]),
-                          (target_position[0] + 1, target_position[1]),
-                          (target_position[0], target_position[1] + 1),
-                          (target_position[0], target_position[1] - 1)]
+def get_forbidden_adjacent_positions(problem, pos):
+    adjacent_positions = [(pos[0] - 1, pos[1]),
+                          (pos[0] + 1, pos[1]),
+                          (pos[0], pos[1] + 1),
+                          (pos[0], pos[1] - 1)]
     forbidden_adjacent_positions = []
-    for target_position in adjacent_positions:
-        if problem.board.check_tile_legal(0, target_position[0],
-                                          target_position[1]):
-            forbidden_adjacent_positions.append(target_position)
+    for pos in adjacent_positions:
+        if problem.board.check_tile_legal(0, pos[0],
+                                          pos[1]):
+            forbidden_adjacent_positions.append(pos)
     return forbidden_adjacent_positions
+
+
+def get_all_illegal_positions(board, problem):
+    played_positions = get_played_positions(board)
+    illegal_positions = []
+    for pos in get_played_positions(board):
+        illegal_positions += get_forbidden_adjacent_positions(problem, pos)
+
+    illegal_positions += list(played_positions)
+    return illegal_positions
 
 
 def get_total_forbidden_positions(board, problem):
@@ -351,8 +354,8 @@ def get_heuristic_cost(board, problem):
     :param problem: The problem we want to solve
     :return: The heuristic cost of given state
     """
-    if is_state_authorized(board.state, problem):
-        return get_sum_distances_from_targets(board.state, problem)
+    if is_state_authorized(board, problem):
+        return get_sum_distances_from_targets(board, problem)
     else:
         return np.inf
 
@@ -382,6 +385,7 @@ def get_current_targets(board, problem):
     for target in problem.targets:
         if board.state.item(target) == -1:
             current_targets.append(target)
+    problem.targets_amount = len(current_targets)
     return current_targets
 
 
@@ -441,6 +445,116 @@ def get_cost_of_actions_helper(actions, board, starting_point):
     return np.sum((new_board.state != -1).astype(np.int))
 
 
+def flip_board(board):
+    board.state = np.where(board.state == 0, 1, 0)
+
+
+def reset_board(board):
+    board.state = np.where(board.state == 1, 0, -1)
+
+
+def get_distance_between_components(generalized_targets):
+    dist = 0
+    representative = generalized_targets[0].targets
+    for i in range(1, len(generalized_targets)):
+        dist += np.min(distance.cdist(representative, generalized_targets[
+            i].targets, 'chebyshev'))
+    return dist
+
+
+def blokus_corners_heuristic_helper(board):
+    flip_board(board)
+    state = board.state
+    s = generate_binary_structure(2, 2)
+    labeled, components_num = label(state, s)
+    print(labeled)
+    print(components_num)
+    # print(components_num)
+    if components_num == 1:
+        return 0
+    indices = np.indices(state.shape).T[:, :, [1, 0]]
+    generalized_targets = []
+    for i in range(1, components_num + 1):
+        generalized_targets.append(GeneralizedTarget(indices[labeled == i]))
+    reset_board(board)
+    return get_distance_between_components(generalized_targets)
+
+
+def blokus_corners_heuristic(board, problem):
+    return blokus_corners_heuristic_helper(board)
+
+
+def update_legal_positions(board, problem):
+    illegal_positions = get_all_illegal_positions(board, problem)
+    array = board._legal
+    array.fill(True)
+    shape = array.shape
+    for i in range(shape[0]):
+        for j in range(shape[1]):
+            for k in range(shape[2]):
+                if (j, k) in illegal_positions:
+                    array.itemset((i, j, k), False)
+
+
+def get_updated_board(board, problem):
+    board_w = board.board_w
+    board_h = board.board_h
+    piece_list = board.piece_list
+    starting_point = problem.original_targets.next()
+    current_state = board.state
+    new_board = Board(board_w, board_h, 1, piece_list, starting_point)
+    new_board.state = current_state
+    update_legal_positions(board, problem)
+    # print(new_board.state)
+    return new_board
+
+
+def fill_positions(board, positions):
+    for pos in positions:
+        board.state.itemset(pos, 0)
+
+
+def check_move_validity(move, board):
+    for (x, y) in move.orientation:
+        # If any tile is illegal, this move isn't valid
+        if not board.check_tile_legal(0, x + move.x, y + move.y):
+            return False
+    return True
+
+
+def move_anyway(move, player, board):
+    piece = move.piece
+    board.pieces[player, move.piece_index] = False  # mark piece as used
+
+    # Update internal state for each tile
+    for (xi, yi) in move.orientation:
+        (x, y) = (xi + move.x, yi + move.y)
+        board.state[y, x] = player
+
+        # This player can't play next to this square
+        if x > 0:
+            board._legal[player, y, x - 1] = False
+        if x < board.board_w - 1:
+            board._legal[player, y, x + 1] = False
+        if y > 0:
+            board._legal[player, y - 1, x] = False
+        if y < board.board_h - 1:
+            board._legal[player, y + 1, x] = False
+
+        # The diagonals are now attached
+        if x > 0 and y > 0:
+            board.connected[player, y - 1, x - 1] = True
+        if x > 0 and y < board.board_h - 1:
+            board.connected[player, y + 1, x - 1] = True
+        if x < board.board_w - 1 and y < board.board_h - 1:
+            board.connected[player, y + 1, x + 1] = True
+        if x < board.board_w - 1 and y > 0:
+            board.connected[player, y - 1, x + 1] = True
+
+    board.scores[player] += piece.get_num_tiles()
+    return piece.get_num_tiles()
+
+
 class BlokusCornersProblem(SearchProblem):
     def __init__(self, board_w, board_h, piece_list, starting_point=(0, 0)):
         self.expanded = 0
@@ -449,8 +563,12 @@ class BlokusCornersProblem(SearchProblem):
         self.piece_list = piece_list
         self.starting_point = starting_point
         self.board = Board(board_w, board_h, 1, piece_list, starting_point)
-        self.generalized_board = GeneralizedBoard(self.board,
-                                                  self, starting_point)
+        original_targets = get_target_corners(self.board, self) + [
+            starting_point]
+        fill_positions(self.board, original_targets)
+        self.targets = original_targets
+        self.original_targets = OriginalTargets(original_targets)
+        self.targets_amount = len(original_targets)
 
     def get_start_state(self):
         """
@@ -458,9 +576,11 @@ class BlokusCornersProblem(SearchProblem):
         """
         return self.board
 
-    def is_goal_state(self, generalized_board):
-        return get_generalized_targets_distances(
-            self.generalized_board.generalized_targets, self.board) == 0
+    def is_goal_state(self, board):
+        if blokus_corners_heuristic_helper(board) == 0:
+            return True
+        else:
+            return False
 
     def get_successors(self, board):
         """
@@ -473,9 +593,13 @@ class BlokusCornersProblem(SearchProblem):
         """
         # Note that for the search problem, there is only one player - #0
         self.expanded = self.expanded + 1
-        return [(board.do_move(0, move), move, move.piece.get_num_tiles())
-                for
-                move in board.get_legal_moves(0)]
+        successors = []
+        for move in board.get_legal_moves(0):
+            new_board = board.do_move(0, move)
+            newer_board = get_updated_board(new_board, self)
+            cost = move.piece.get_num_tiles()
+            successors.append((newer_board, move, cost))
+        return successors
 
     def get_cost_of_actions(self, actions):
         """
@@ -489,7 +613,7 @@ class BlokusCornersProblem(SearchProblem):
                                           self.starting_point)
 
 
-class BlokusOriginalCornersProblem(SearchProblem):
+class OriginalBlokusCornersProblem(SearchProblem):
     def __init__(self, board_w, board_h, piece_list, starting_point=(0, 0)):
         self.expanded = 0
         self.board_w = board_w
@@ -498,6 +622,7 @@ class BlokusOriginalCornersProblem(SearchProblem):
         self.starting_point = starting_point
         self.board = Board(board_w, board_h, 1, piece_list, self.starting_point)
         self.targets = get_target_corners(self.board, self)
+        self.targets_amount = len(self.targets)
 
     def get_start_state(self):
         """
@@ -538,7 +663,7 @@ class BlokusOriginalCornersProblem(SearchProblem):
                                           self.starting_point)
 
 
-def blokus_corners_heuristic(board, problem):
+def original_blokus_corners_heuristic(board, problem):
     """
     Your heuristic for the BlokusCornersProblem goes here.
 
@@ -551,13 +676,14 @@ def blokus_corners_heuristic(board, problem):
     On the other hand, inadmissible or inconsistent heuristics may find
     optimal solutions, so be careful.
     """
-    return get_heuristic_cost(board.state, problem)
+    return get_heuristic_cost(board, problem)
 
 
 class BlokusCoverProblem(SearchProblem):
     def __init__(self, board_w, board_h, piece_list, starting_point=(0, 0),
                  targets=[(0, 0)]):
-        self.targets = targets.copy()
+        self.targets = targets
+        self.targets_amount = len(targets)
         self.expanded = 0
         self.board_w = board_w
         self.board_h = board_h
