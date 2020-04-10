@@ -85,7 +85,8 @@ class GeneralizedTarget:
     list of positions which constitute the generalized target.
     """
 
-    def __init__(self, targets):
+    def __init__(self, original, targets):
+        self.original = original
         self.targets = targets
 
     def get_distance(self, board, positions):
@@ -120,9 +121,8 @@ class GeneralizedBoard:
     A board which holds the information of its current generalized targets
     """
 
-    def __init__(self, board, problem, starting_point, generalized_targets):
+    def __init__(self, board, targets_amount):
         self.board = board
-        self.generalized_targets = generalized_targets
         self.move = None
         self.cost = 0
         self.heuristic_cost = 1
@@ -217,12 +217,7 @@ def get_played_positions(board):
     :return: A numpy array in which every sub-array contains two integers,
     one for each coordinate of a position
     """
-    array = np.argwhere(board.state != -1)
-    lst = array.tolist()
-    new_lst = []
-    for pos in lst:
-        new_lst.append(tuple(pos))
-    return new_lst
+    return np.argwhere(board.state != -1)
 
 
 def get_diagonal_positions(pos, board):
@@ -296,26 +291,25 @@ def get_target_corners(board, problem):
 
 
 def get_forbidden_adjacent_positions(problem, pos):
-    adjacent_positions = [(pos[0] - 1, pos[1]),
-                          (pos[0] + 1, pos[1]),
-                          (pos[0], pos[1] + 1),
-                          (pos[0], pos[1] - 1)]
-    forbidden_adjacent_positions = []
+    adjacent_positions = [[pos[0] - 1, pos[1]],
+                          [pos[0] + 1, pos[1]],
+                          [pos[0], pos[1] + 1],
+                          [pos[0], pos[1] - 1]]
+
+    to_return = []
     for pos in adjacent_positions:
-        if problem.board.check_tile_legal(0, pos[0],
-                                          pos[1]):
-            forbidden_adjacent_positions.append(pos)
-    return forbidden_adjacent_positions
+        if problem.board.check_tile_legal(0, pos[0], pos[1]):
+            to_return.append(pos)
+    return np.array(to_return)
 
 
 def get_all_illegal_positions(board, problem):
     played_positions = get_played_positions(board)
-    illegal_positions = []
-    for pos in get_played_positions(board):
-        illegal_positions += get_forbidden_adjacent_positions(problem, pos)
-
-    illegal_positions += list(played_positions)
-    return illegal_positions
+    to_return = played_positions.copy()
+    for pos in played_positions:
+        new_forbidden = get_forbidden_adjacent_positions(problem, pos)
+        to_return = np.concatenate((to_return, new_forbidden))
+    return to_return
 
 
 def get_total_forbidden_positions(board, problem):
@@ -354,10 +348,10 @@ def get_heuristic_cost(board, problem):
     :param problem: The problem we want to solve
     :return: The heuristic cost of given state
     """
-    if is_state_authorized(board, problem):
-        return get_sum_distances_from_targets(board, problem)
-    else:
-        return np.inf
+    # if is_state_authorized(board, problem):
+    return get_max_distance_from_target(board, problem)
+    # else:
+    #     return np.inf
 
 
 def get_distance_between_positions(pos1, pos2):
@@ -402,6 +396,7 @@ def get_min_dist_from_target(board, target):
     for position, value in np.ndenumerate(board.state):
         if value != -1:
             played_positions.append(position)
+    played_positions.append([0, 0])
     min_dist = np.inf
     for pos in played_positions:
         cur_dist = get_distance_between_positions(pos, target)
@@ -410,22 +405,24 @@ def get_min_dist_from_target(board, target):
     return min_dist
 
 
-def get_sum_distances_from_targets(board, problem):
+def get_max_distance_from_target(board, problem):
     """
     Gets the sum of distances from the current targets.
     :param board: The board in play
     :param problem: The problem we want to solve
     :return: The sum of distances from the current targets
     """
-    sm = 0
+    mx = 0
     cur_targets = get_current_targets(board, problem)
     len_cur_goals = len(cur_targets)
     if len_cur_goals == 0:
         return 0
     else:
         for target in cur_targets:
-            sm += get_min_dist_from_target(board, target)
-        return sm
+            current_dist = get_min_dist_from_target(board, target)
+            if mx < current_dist:
+                mx = current_dist
+    return mx
 
 
 def get_cost_of_actions_helper(actions, board, starting_point):
@@ -446,67 +443,91 @@ def get_cost_of_actions_helper(actions, board, starting_point):
 
 
 def flip_board(board):
-    board.state = np.where(board.state == 0, 1, 0)
+    return np.where(board.state == 0, 1, 0)
 
 
 def reset_board(board):
-    board.state = np.where(board.state == 1, 0, -1)
+    return np.where(board.state == 1, 0, -1)
+
+
+def get_complete_generalized_targets(generalized_targets, problem):
+    to_return = generalized_targets
+    tar_dict = dict()
+    for tar in problem.targets:
+        tar_dict[tar] = False
+    for gen_tar in generalized_targets:
+        for tar in gen_tar.original:
+            tar_dict[tar] = True
+    for tar in tar_dict:
+        if not tar_dict[tar]:
+            to_return.append(GeneralizedTarget([tar], np.array([tar])))
+    return to_return
 
 
 def get_distance_between_components(generalized_targets):
-    dist = 0
-    representative = generalized_targets[0].targets
-    for i in range(1, len(generalized_targets)):
-        dist += np.min(distance.cdist(representative, generalized_targets[
-            i].targets, 'chebyshev'))
-    return dist
+    max_dist = 0
+    gen_tar_amount = len(generalized_targets)
+    for i in range(0, gen_tar_amount):
+        cur_gen_tar1 = generalized_targets[i].targets
+        for j in range(0, gen_tar_amount):
+            if j != i:
+                cur_gen_tar2 = generalized_targets[j].targets
+                new_dist = np.min(
+                    distance.cdist(cur_gen_tar1, cur_gen_tar2, 'chebyshev'))
+                if max_dist < new_dist:
+                    max_dist = new_dist
+    return max_dist
 
 
-def blokus_corners_heuristic_helper(board):
-    flip_board(board)
-    state = board.state
+def get_original_targets(labeled, problem):
+    to_return = []
+    for index, value in np.ndenumerate(labeled):
+        if index in problem.targets:
+            to_return.append(index)
+    return to_return
+
+
+def blokus_corners_heuristic(board, problem):
+    state = flip_board(board)
     s = generate_binary_structure(2, 2)
     labeled, components_num = label(state, s)
-    print(labeled)
-    print(components_num)
-    # print(components_num)
     if components_num == 1:
         return 0
     indices = np.indices(state.shape).T[:, :, [1, 0]]
     generalized_targets = []
     for i in range(1, components_num + 1):
-        generalized_targets.append(GeneralizedTarget(indices[labeled == i]))
-    reset_board(board)
-    return get_distance_between_components(generalized_targets)
-
-
-def blokus_corners_heuristic(board, problem):
-    return blokus_corners_heuristic_helper(board)
+        labeled_indices = indices[labeled == i]
+        generalized_targets.append(GeneralizedTarget(get_original_targets(
+            labeled_indices, problem), labeled_indices))
+    to_return = get_distance_between_components(
+        get_complete_generalized_targets(generalized_targets, problem))
+    return to_return
 
 
 def update_legal_positions(board, problem):
     illegal_positions = get_all_illegal_positions(board, problem)
     array = board._legal
     array.fill(True)
-    shape = array.shape
-    for i in range(shape[0]):
-        for j in range(shape[1]):
-            for k in range(shape[2]):
-                if (j, k) in illegal_positions:
-                    array.itemset((i, j, k), False)
+    for pos in illegal_positions:
+        array[0, pos[0], pos[1]] = False
+    return array
 
 
-def get_updated_board(board, problem):
-    board_w = board.board_w
-    board_h = board.board_h
-    piece_list = board.piece_list
+def get_updated_board_starting_point(board, problem):
     starting_point = problem.original_targets.next()
-    current_state = board.state
-    new_board = Board(board_w, board_h, 1, piece_list, starting_point)
-    new_board.state = current_state
-    update_legal_positions(board, problem)
-    # print(new_board.state)
-    return new_board
+    board.connected[0, starting_point[0], starting_point[1]] = True
+    return board
+
+
+def get_updated_board_all_starting_points(board, problem):
+    for tar in problem.targets:
+        board.connected[0, tar[0], tar[1]] = True
+    return board
+
+
+def get_updated_board_legal_positions(board, problem):
+    board._legal = update_legal_positions(board, problem)
+    return board
 
 
 def fill_positions(board, positions):
@@ -555,6 +576,20 @@ def move_anyway(move, player, board):
     return piece.get_num_tiles()
 
 
+def is_targets_reached(board, problem):
+    targets = problem.targets
+    targets_amount = len(targets)
+    counter = 0
+    state = board.state
+    for target in targets:
+        if state[target[0], target[1]] == 0:
+            counter += 1
+    if counter == targets_amount:
+        return True
+    else:
+        return False
+
+
 class BlokusCornersProblem(SearchProblem):
     def __init__(self, board_w, board_h, piece_list, starting_point=(0, 0)):
         self.expanded = 0
@@ -562,12 +597,13 @@ class BlokusCornersProblem(SearchProblem):
         self.board_h = board_h
         self.piece_list = piece_list
         self.starting_point = starting_point
-        self.board = Board(board_w, board_h, 1, piece_list, starting_point)
-        original_targets = get_target_corners(self.board, self) + [
+        board = Board(board_w, board_h, 1, piece_list, starting_point)
+        # fill_positions(self.board, original_targets)
+        original_targets = get_target_corners(board, self) + [
             starting_point]
-        fill_positions(self.board, original_targets)
-        self.targets = original_targets
         self.original_targets = OriginalTargets(original_targets)
+        self.targets = original_targets
+        self.board = get_updated_board_all_starting_points(board, self)
         self.targets_amount = len(original_targets)
 
     def get_start_state(self):
@@ -577,7 +613,9 @@ class BlokusCornersProblem(SearchProblem):
         return self.board
 
     def is_goal_state(self, board):
-        if blokus_corners_heuristic_helper(board) == 0:
+        print(board.state)
+        if blokus_corners_heuristic(board, self) == 0 and \
+                is_targets_reached(board, self):
             return True
         else:
             return False
@@ -594,9 +632,11 @@ class BlokusCornersProblem(SearchProblem):
         # Note that for the search problem, there is only one player - #0
         self.expanded = self.expanded + 1
         successors = []
-        for move in board.get_legal_moves(0):
+        board = get_updated_board_starting_point(board, self)
+        legal_moves = board.get_legal_moves(0)
+        for move in legal_moves:
             new_board = board.do_move(0, move)
-            newer_board = get_updated_board(new_board, self)
+            newer_board = get_updated_board_legal_positions(new_board, self)
             cost = move.piece.get_num_tiles()
             successors.append((newer_board, move, cost))
         return successors
