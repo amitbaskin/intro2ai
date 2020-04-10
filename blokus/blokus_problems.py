@@ -282,9 +282,9 @@ def get_target_corners(board, problem):
     :param problem: The problem we want to solve
     :return: The corners which are the targets of the corner problem
     """
-    target_corners = [(0, 0), (0, board.board_w - 1),
-                      (board.board_h - 1, 0),
-                      (board.board_h - 1, board.board_w - 1)]
+    target_corners = [[0, 0], [0, board.board_w - 1],
+                      [board.board_h - 1, 0],
+                      [board.board_h - 1, board.board_w - 1]]
     if problem.starting_point in target_corners:
         target_corners.remove(problem.starting_point)
     return target_corners
@@ -377,7 +377,7 @@ def get_current_targets(board, problem):
     """
     current_targets = []
     for target in problem.targets:
-        if board.state.item(target) == -1:
+        if board.state.item(tuple(target)) == -1:
             current_targets.append(target)
     problem.targets_amount = len(current_targets)
     return current_targets
@@ -422,6 +422,8 @@ def get_max_distance_from_target(board, problem):
             current_dist = get_min_dist_from_target(board, target)
             if mx < current_dist:
                 mx = current_dist
+    print(board.state)
+    print(mx)
     return mx
 
 
@@ -454,40 +456,57 @@ def get_complete_generalized_targets(generalized_targets, problem):
     to_return = generalized_targets
     tar_dict = dict()
     for tar in problem.targets:
-        tar_dict[tar] = False
+        tar_dict[tuple(tar)] = False
     for gen_tar in generalized_targets:
         for tar in gen_tar.original:
-            tar_dict[tar] = True
+            tar_dict[tuple(tar)] = True
     for tar in tar_dict:
-        if not tar_dict[tar]:
+        if not tar_dict[tuple(tar)]:
             to_return.append(GeneralizedTarget([tar], np.array([tar])))
     return to_return
 
 
 def get_distance_between_components(generalized_targets):
-    max_dist = 0
+    distances_dict = dict()
+    for get_tar in generalized_targets:
+        distances_dict[get_tar] = np.inf
     gen_tar_amount = len(generalized_targets)
     for i in range(0, gen_tar_amount):
-        cur_gen_tar1 = generalized_targets[i].targets
+        cur_gen_tar1 = generalized_targets[i]
+        cur_gen_tar1_targets = cur_gen_tar1.targets
         for j in range(0, gen_tar_amount):
             if j != i:
-                cur_gen_tar2 = generalized_targets[j].targets
-                new_dist = np.min(
-                    distance.cdist(cur_gen_tar1, cur_gen_tar2, 'chebyshev'))
-                if max_dist < new_dist:
-                    max_dist = new_dist
-    return max_dist
+                cur_gen_tar2 = generalized_targets[j]
+                cur_gen_tar2_targets = cur_gen_tar2.targets
+                print('cur_gen_tar1')
+                print(cur_gen_tar1.targets)
+                print('cur_gen_tar2')
+                print(cur_gen_tar2.targets)
+                distances_matrix = distance.cdist(cur_gen_tar1_targets,
+                                                   cur_gen_tar2_targets,
+                                                  'chebyshev')
+                print('distances_matrix')
+                print(distances_matrix)
+                new_dist = np.min(distances_matrix)
+                if distances_dict[cur_gen_tar1] > new_dist:
+                    distances_dict[cur_gen_tar1] = new_dist
+                if distances_dict[cur_gen_tar2] > new_dist:
+                    distances_dict[cur_gen_tar2] = new_dist
+
+    to_return = max(distances_dict.values())
+    return to_return
 
 
-def get_original_targets(labeled, problem):
+def get_original_targets(from_labeled, problem):
     to_return = []
-    for index, value in np.ndenumerate(labeled):
+    lst = from_labeled.tolist()
+    for index in lst:
         if index in problem.targets:
             to_return.append(index)
     return to_return
 
 
-def blokus_corners_heuristic(board, problem):
+def experimental_blokus_corners_heuristic(board, problem):
     state = flip_board(board)
     s = generate_binary_structure(2, 2)
     labeled, components_num = label(state, s)
@@ -495,12 +514,24 @@ def blokus_corners_heuristic(board, problem):
         return 0
     indices = np.indices(state.shape).T[:, :, [1, 0]]
     generalized_targets = []
+    print('board.state')
+    print(board.state)
     for i in range(1, components_num + 1):
         labeled_indices = indices[labeled == i]
         generalized_targets.append(GeneralizedTarget(get_original_targets(
             labeled_indices, problem), labeled_indices))
     to_return = get_distance_between_components(
         get_complete_generalized_targets(generalized_targets, problem))
+    print('heuristic cost')
+    print('heuristic cost')
+    print('heuristic cost')
+    print('heuristic cost')
+    print('heuristic cost')
+    print(to_return)
+    print(to_return)
+    print(to_return)
+    print(to_return)
+    print(to_return)
     return to_return
 
 
@@ -590,7 +621,7 @@ def is_targets_reached(board, problem):
         return False
 
 
-class BlokusCornersProblem(SearchProblem):
+class ExperimentalBlokusCornersProblem(SearchProblem):
     def __init__(self, board_w, board_h, piece_list, starting_point=(0, 0)):
         self.expanded = 0
         self.board_w = board_w
@@ -599,8 +630,9 @@ class BlokusCornersProblem(SearchProblem):
         self.starting_point = starting_point
         board = Board(board_w, board_h, 1, piece_list, starting_point)
         # fill_positions(self.board, original_targets)
-        original_targets = get_target_corners(board, self) + [
-            starting_point]
+        original_targets = [[0, 0], [0, board.board_w - 1],
+                      [board.board_h - 1, 0],
+                      [board.board_h - 1, board.board_w - 1]]
         self.original_targets = OriginalTargets(original_targets)
         self.targets = original_targets
         self.board = get_updated_board_all_starting_points(board, self)
@@ -653,7 +685,7 @@ class BlokusCornersProblem(SearchProblem):
                                           self.starting_point)
 
 
-class OriginalBlokusCornersProblem(SearchProblem):
+class BlokusCornersProblem(SearchProblem):
     def __init__(self, board_w, board_h, piece_list, starting_point=(0, 0)):
         self.expanded = 0
         self.board_w = board_w
@@ -703,7 +735,7 @@ class OriginalBlokusCornersProblem(SearchProblem):
                                           self.starting_point)
 
 
-def original_blokus_corners_heuristic(board, problem):
+def blokus_corners_heuristic(board, problem):
     """
     Your heuristic for the BlokusCornersProblem goes here.
 
