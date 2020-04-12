@@ -1,5 +1,202 @@
 from board import *
 
+
+class OriginalTargets:
+    """
+    The original targets given in a problem such that we can rotate along
+     the targets get the next target in the list.
+    """
+
+    def __init__(self, positions, current_target_index=0):
+        self.positions = positions
+        self.current_target_index = current_target_index
+        self.current_target = positions[current_target_index]
+        self.targets_amount = len(positions)
+
+    def next(self):
+        """
+        Gets the next target in the list of original_targets.
+        :return: The next target in the list of original_targets
+        """
+        next_index = self.current_target_index + 1
+        self.current_target_index = next_index % self.targets_amount
+        updated_pos = self.positions[self.current_target_index]
+        self.current_target = updated_pos
+        return updated_pos
+
+
+# def get_successors_helper(self, board, successors):
+#     # board = get_updated_board_starting_point(board, self)
+#     cur_targets_reached_amount = get_reached_targets_amount(board, self)
+#     legal_moves = board.get_legal_moves(0)
+#     for move in legal_moves:
+#         new_board = board.do_move(0, move)
+#         newer_board = get_updated_board_legal_positions(new_board, self)
+#         new_targets_reached_amount = get_reached_targets_amount(
+#             newer_board, self)
+#         if is_targets_reached(board, self) and is_state_authorized(
+#                 board, self):
+#             cost = move.piece.get_num_tiles()
+#             successors.append((newer_board, move, cost))
+#             continue
+#         if new_targets_reached_amount > cur_targets_reached_amount and \
+#                 is_state_authorized(board,
+#                                     self):
+#             # print(new_board.state)
+#             self.get_successors_helper(new_board, successors)
+#     return successors
+
+
+# def get_successors(self, board):
+# #     """
+# #     board: Search state
+# #     For a given state, this should return a list of triples,
+# #     (successor, action, stepCost), where 'successor' is a
+# #     successor to the current state, 'action' is the action
+# #     required to get there, and 'stepCost' is the incremental
+# #     cost of expanding to that successor
+# #     """
+# #     # Note that for the search problem, there is only one player - #0
+#     self.expanded = self.expanded + 1
+#     successors = []
+#     board = get_updated_board_starting_point(board, self)
+#     legal_moves = board.get_legal_moves(0)
+#     for move in legal_moves:
+#         new_board = board.do_move(0, move)
+#         if is_position_played(new_board,
+#                               get_current_original_target(self)) and \
+#                 is_state_authorized(
+#                     board, self):
+#             newer_board = get_updated_board_legal_positions(new_board, self)
+#             cost = move.piece.get_num_tiles()
+#             successors.append((newer_board, move, cost))
+#     return successors
+
+
+def get_updated_board_starting_point(board, problem):
+    starting_point = problem.original_targets.next()
+    board.connected[0, starting_point[0], starting_point[1]] = True
+    return board
+
+
+def get_forbidden_adjacent_positions(problem, pos):
+    adjacent_positions = [(pos[0] - 1, pos[1]),
+                          (pos[0] + 1, pos[1]),
+                          (pos[0], pos[1] + 1),
+                          (pos[0], pos[1] - 1)]
+
+    to_return = []
+    for pos in adjacent_positions:
+        if problem.board.check_tile_legal(0, pos[0], pos[1]):
+            to_return.append(pos)
+    return to_return
+
+
+def get_all_illegal_positions(board, problem):
+    played_positions = get_played_positions(board)
+    to_return = played_positions.copy()
+    for pos in played_positions:
+        new_forbidden = get_forbidden_adjacent_positions(problem, pos)
+        to_return = np.concatenate((to_return, new_forbidden))
+    return to_return
+
+
+def get_total_forbidden_positions(board, problem):
+    """
+    For each target of the problem we want to get the forbidden positions
+    of the target. So we get all the forbidden positions of the given problem.
+    :param board: The board in play
+    :param problem: The problem we want to solve
+    :return: A list of all forbidden positions of the given problem
+    """
+    forbidden_positions = []
+    for target in get_current_targets(board, problem):
+        forbidden_positions += get_forbidden_adjacent_positions(problem, target)
+    return forbidden_positions
+
+
+def get_target_corners(board, problem):
+    """
+    It is given to us in the corners problem that the starting point has to
+    be some corner. So here we check which corner is the starting point and
+    then give the other corners as our targets.
+    :param board: The board in play
+    :param problem: The problem we want to solve
+    :return: The corners which are the targets of the corner problem
+    """
+    target_corners = [[0, 0], [0, board.board_w - 1],
+                      [board.board_h - 1, 0],
+                      [board.board_h - 1, board.board_w - 1]]
+    if problem.starting_point in target_corners:
+        target_corners.remove(problem.starting_point)
+    return target_corners
+
+
+def get_played_positions(board):
+    """
+    Gets the positions that are played in the given board
+    :param board: The current board at play
+    :return: A numpy array in which every sub-array contains two integers,
+    one for each coordinate of a position
+    """
+    return np.argwhere(board.state != -1)
+
+
+def update_legal_positions(board, problem):
+    illegal_positions = get_all_illegal_positions(board, problem)
+    array = board._legal
+    array.fill(True)
+    for pos in illegal_positions:
+        array[0, pos[0], pos[1]] = False
+    return array
+
+
+def get_updated_board_legal_positions(board, problem):
+    board._legal = update_legal_positions(board, problem)
+    return board
+
+
+def is_state_authorized(board, problem):
+    """
+    Determines whether or not a given board is allowed according to whether
+    or not there are forbidden positions played in this board.
+    :param board: The board to check its validation
+    :param problem: The problem we want to solve
+    :return: True iff the
+    """
+    forbidden_positions = get_total_forbidden_positions(board, problem)
+    for pos in forbidden_positions:
+        if board.state.item(pos) != -1:
+            return False
+    return True
+
+
+def get_min_tiles_remained(board):
+    mn = np.inf
+    pieces = board.piece_list
+    for piece in pieces:
+        cur_num = piece.get_num_tiles()
+        if cur_num < mn:
+            mn = cur_num
+    return mn
+
+
+def get_current_original_target(problem):
+    return problem.original_targets.current_target
+
+
+def is_position_played(board, pos):
+    state = board.state
+    pos_value = state[pos[0], pos[1]]
+    return pos_value != -1
+
+
+def connect_targets(board, problem):
+    for tar in problem.targets:
+        board.connected[0, tar[0], tar[1]] = True
+    return board
+
+
 def order_moves(moves, problem):
     board = Board(problem.board_w, problem.board_h, 1,
                   problem.piece_list, problem.starting_point)
