@@ -97,8 +97,8 @@ class Board:
         # Generate all legal moves
         move_list = []
         for piece in self.piece_list:
-            for x in range(self.board_w - 1):
-                for y in range(self.board_h - 1):
+            for x in range(self.board_w):
+                for y in range(self.board_h):
                     for ori in piece:
                         new_move = Move(piece,
                                         self.piece_list.pieces.index(piece),
@@ -178,8 +178,7 @@ class Board:
         return self.scores[player]
 
     def __eq__(self, other):
-        return np.array_equal(self.state, other.state) and np.array_equal(
-            self.pieces, other.pieces)
+        return np.array_equal(self.state, other.state) and np.array_equal(self.pieces, other.pieces)
 
     def __hash__(self):
         return hash(str(self.state))

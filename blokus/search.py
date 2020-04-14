@@ -97,13 +97,13 @@ def null_heuristic(state, problem=None):
 
 def graph_search_pattern(fringe, problem, insertion_func, getter_func,
                          check_func, cost_func, heuristic=null_heuristic):
-    visited_list = dict()
+    visited_list = set()
     start_state = problem.get_start_state()
     start_node = GraphNode(None, start_state, None, 0,
                            heuristic(start_state, problem))
     cur_successors = problem.get_successors(start_node.state)
     insertion_func(cur_successors, fringe, start_node)
-    visited_list[start_state] = 0
+    visited_list.add(start_state)
     while fringe:
         node = getter_func(fringe)
         # Allows further search if got to state with less cost.
@@ -111,7 +111,7 @@ def graph_search_pattern(fringe, problem, insertion_func, getter_func,
         if check_func(node, visited_list):
             continue
         else:
-            visited_list[node.state] = cost_func(node)
+            visited_list.add(node.state)
         if problem.is_goal_state(node.state):
             return node.get_moves(problem)
         else:
@@ -223,7 +223,7 @@ def a_star_search(problem, heuristic=null_heuristic):
             exit()
 
     def astar_check_func(node, visited_list):
-        return node.state in visited_list.keys()
+        return node.state in visited_list
         #and visited_list[node.state] <= node.astar_cost
 
     def astar_cost_func(node):

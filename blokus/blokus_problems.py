@@ -69,8 +69,8 @@ def get_target_corners(board, problem):
     target_corners = [[0, 0], [0, board.board_w - 1],
                       [board.board_h - 1, 0],
                       [board.board_h - 1, board.board_w - 1]]
-    if problem.starting_point in target_corners:
-        target_corners.remove(problem.starting_point)
+    if list(problem.starting_point) in target_corners:
+        target_corners.remove(list(problem.starting_point))
     return target_corners
 
 
@@ -116,19 +116,6 @@ def is_state_authorized(board, problem):
     return True
 
 
-def get_heuristic_cost(board, problem):
-    """
-    Gets the heuristic cost of given state.
-    :param board: The board to check its state heuristic cost
-    :param problem: The problem we want to solve
-    :return: The heuristic cost of given state
-    """
-    # if is_state_authorized(board, problem):
-    return get_max_distance_from_target(board, problem)
-    # else:
-    #     return np.inf
-
-
 def get_distance_between_positions(pos1, pos2):
     """
     Gets the maximum difference between the coordinates of the two given
@@ -158,7 +145,25 @@ def get_current_targets(board, problem):
     return current_targets
 
 
-def get_min_dist_from_target(board, target):
+def get_played_positions(board, problem):
+    played_positions = []
+    for position, value in np.ndenumerate(board.state):
+        if value != -1:
+            played_positions.append(position)
+    played_positions.append(problem.starting_point)
+    return played_positions
+
+
+def get_min_dist_from_target(target, played_positions):
+    min_dist = np.inf
+    for pos in played_positions:
+        cur_dist = get_distance_between_positions(pos, target)
+        if cur_dist < min_dist:
+            min_dist = cur_dist
+    return min_dist
+
+
+def get_min_dist_and_closest_position_from_target(board, target, problem):
     """
     Gets the minimum distance between the played positions in the given
     board and the given target.
@@ -167,17 +172,109 @@ def get_min_dist_from_target(board, target):
     :return: The minimum distance between the played positions in the given
      board and the given target.
     """
-    played_positions = []
-    for position, value in np.ndenumerate(board.state):
-        if value != -1:
-            played_positions.append(position)
-    played_positions.append([0, 0])
+    played_positions = get_played_positions(board, problem)
     min_dist = np.inf
+    closest_pos = None
     for pos in played_positions:
         cur_dist = get_distance_between_positions(pos, target)
         if cur_dist < min_dist:
             min_dist = cur_dist
-    return min_dist
+            closest_pos = pos
+    return min_dist, closest_pos
+
+
+def the_target_and_closest_position(board, problem):
+    cur_targets = get_current_targets(board, problem)
+    targets_dict = dict()
+    for target in cur_targets:
+        closest_position = \
+        get_min_dist_and_closest_position_from_target(board, target, problem)[1]
+        coordinates_difference = math.fabs(target[0] - closest_position[0]) + \
+                                 math.fabs(target[1] - closest_position[1])
+        targets_dict[tuple(target)] = closest_position, coordinates_difference
+    maximal_difference = 0
+    the_target = None
+    for tar in cur_targets:
+        cur_diff = targets_dict[tuple(tar)][1]
+        if cur_diff > maximal_difference:
+            maximal_difference = cur_diff
+            the_target = tar
+    closest_position = targets_dict[tuple(the_target)][0]
+    return tuple(the_target), closest_position
+
+
+def get_additional_relevant_positions(the_target, closest_position):
+    x_close = closest_position[0]
+    y_close = closest_position[1]
+    x_tar = the_target[0]
+    y_tar = the_target[1]
+    x_diff = int(math.fabs(closest_position[0] - the_target[0]))
+    y_diff = int(math.fabs(closest_position[1] - the_target[1]))
+    diff_diffs = int(math.fabs(x_diff - y_diff))
+    relevant_positions = []
+    if x_close <= x_tar:
+        if y_close <= y_tar:
+            if x_diff <= y_diff:
+                for i in range(1, x_diff + 1):
+                    relevant_positions.append((x_close + i, y_close + i))
+                for j in range(1, diff_diffs + 1):
+                    relevant_positions.append((x_close + x_diff,
+                                               y_close + x_diff + j))
+            elif x_diff > y_diff:
+                for i in range(1, y_diff + 1):
+                    relevant_positions.append((x_close + i, y_close + i))
+                for j in range(1, diff_diffs + 1):
+                    relevant_positions.append((x_close + y_diff + j,
+                                               y_close + y_diff))
+        elif y_close > y_tar:
+            if x_diff <= y_diff:
+                for i in range(1, x_diff + 1):
+                    relevant_positions.append((x_close + i, y_close - i))
+                for j in range(1, diff_diffs + 1):
+                    relevant_positions.append((x_close + x_diff,
+                                               y_close + x_diff - j))
+            elif x_diff > y_diff:
+                for i in range(1, y_diff + 1):
+                    relevant_positions.append((x_close + i, y_close - i))
+                for j in range(1, diff_diffs + 1):
+                    relevant_positions.append((x_close + y_diff + j,
+                                               y_close + y_diff))
+    else:
+        if y_close <= y_tar:
+            if x_diff <= y_diff:
+                for i in range(1, x_diff + 1):
+                    relevant_positions.append((x_close - i, y_close + i))
+                for j in range(1, diff_diffs + 1):
+                    relevant_positions.append((x_close + x_diff,
+                                               y_close + x_diff + j))
+            elif x_diff > y_diff:
+                for i in range(1, y_diff + 1):
+                    relevant_positions.append((x_close - i, y_close + i))
+                for j in range(1, diff_diffs + 1):
+                    relevant_positions.append((x_close + y_diff - j,
+                                               y_close + y_diff))
+        elif y_close > y_tar:
+            if x_diff <= y_diff:
+                for i in range(1, x_diff + 1):
+                    relevant_positions.append((x_close - i, y_close - i))
+                for j in range(1, diff_diffs + 1):
+                    relevant_positions.append((x_close + x_diff,
+                                               y_close + x_diff - j))
+            elif x_diff > y_diff:
+                for i in range(1, y_diff + 1):
+                    relevant_positions.append((x_close - i, y_close - i))
+                for j in range(1, diff_diffs + 1):
+                    relevant_positions.append((x_close + y_diff - j,
+                                               y_close + y_diff))
+    return relevant_positions
+
+
+def get_sum_targets_distances(cur_targets, played_positions):
+    sm = 0
+    for target in cur_targets:
+        current_dist = get_min_dist_from_target(target, played_positions)
+        sm += current_dist
+    return sm
 
 
 def get_max_distance_from_target(board, problem):
@@ -194,29 +291,17 @@ def get_max_distance_from_target(board, problem):
         return 0
     else:
         for target in cur_targets:
-            current_dist = get_min_dist_from_target(board, target)
+            current_dist = get_min_dist_and_closest_position_from_target(
+                board, target, problem)[0]
             if mx < current_dist:
                 mx = current_dist
-    print(board.state)
-    print(mx)
+    # print(board.state)
+    # print(mx)
     return mx
 
 
-def get_cost_of_actions_helper(actions, board, starting_point):
-    """
-    Gets the total cost of a particular sequence of actions.
-    The sequence must
-    be composed of legal moves
-    :param actions: A list of actions to take
-    :param board: The board in play
-    :param starting_point: The starting point in the board
-    :return: The total cost of a particular sequence of actions.
-    """
-    total_cost = 0
-    for action in actions:
-        cost = action.piece.get_num_tiles()
-        total_cost += cost
-    return total_cost
+def get_starting_point(problem):
+    return problem.starting_point
 
 
 class BlokusCornersProblem(SearchProblem):
@@ -277,7 +362,29 @@ class BlokusCornersProblem(SearchProblem):
         return total_cost
 
 
+def new_blokus_corners_heuristic(board, problem):
+    cur_targets = get_current_targets(board, problem)
+    targets_amount = len(cur_targets)
+    if targets_amount == 0:
+        return 0
+    played_positions = get_played_positions(board, problem)
+    to_return = get_sum_targets_distances(cur_targets, played_positions) * \
+                targets_amount
+    print(board.state)
+    print(to_return)
+    return to_return
+
+
 def blokus_corners_heuristic(board, problem):
+    max_dist = get_max_distance_from_target(board, problem)
+    amount_left = len(get_current_targets(board, problem))
+    to_return = max_dist + amount_left - 1
+    print(board.state)
+    print(to_return)
+    return to_return
+
+
+def alt_blokus_corners_heuristic(board, problem):
     """
     Your heuristic for the BlokusCornersProblem goes here.
 
@@ -290,7 +397,34 @@ def blokus_corners_heuristic(board, problem):
     On the other hand, inadmissible or inconsistent heuristics may find
     optimal solutions, so be careful.
     """
-    return get_heuristic_cost(board, problem)
+    cur_targets = get_current_targets(board, problem)
+    cur_targets_amount = len(cur_targets)
+    if cur_targets_amount == 0:
+        return 0
+    if cur_targets_amount == 1 or (cur_targets_amount == 2 and (math.fabs(
+            cur_targets[0][0] - cur_targets[1][0]) +
+                                                                math.fabs(
+                                                                    cur_targets[
+                                                                        0][1] -
+                                                                    cur_targets[
+                                                                        1][
+                                                                        1])) ==
+                                   problem.board_w + problem.board_h):
+        return get_max_distance_from_target(board, problem)
+    else:
+        played_positions = get_played_positions(board, problem)
+        tple = the_target_and_closest_position(board, problem)
+        the_target = tple[0]
+        closest_position = tple[1]
+        dist = max(math.fabs(the_target[0] - closest_position[0]), math.fabs(
+            the_target[1] - closest_position[1]))
+        played_positions += get_additional_relevant_positions(the_target,
+                                                              closest_position)
+        distances_sum = get_sum_targets_distances(cur_targets, played_positions)
+        to_return = distances_sum + dist
+        print(board.state)
+        print(to_return)
+        return to_return
 
 
 class BlokusCoverProblem(SearchProblem):
@@ -340,12 +474,15 @@ class BlokusCoverProblem(SearchProblem):
         The sequence must
         be composed of legal moves
         """
-        return get_cost_of_actions_helper(actions, self.board,
-                                          self.starting_point)
+        total_cost = 0
+        for action in actions:
+            cost = action.piece.get_num_tiles()
+            total_cost += cost
+        return total_cost
 
 
 def blokus_cover_heuristic(board, problem):
-    return get_heuristic_cost(board, problem)
+    return
 
 
 class ClosestLocationSearch:

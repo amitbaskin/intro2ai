@@ -1,6 +1,23 @@
 from board import *
 
 
+def get_cost_of_actions_helper(actions, board, starting_point):
+    """
+    Gets the total cost of a particular sequence of actions.
+    The sequence must
+    be composed of legal moves
+    :param actions: A list of actions to take
+    :param board: The board in play
+    :param starting_point: The starting point in the board
+    :return: The total cost of a particular sequence of actions.
+    """
+    total_cost = 0
+    for action in actions:
+        cost = action.piece.get_num_tiles()
+        total_cost += cost
+    return total_cost
+
+
 class OriginalTargets:
     """
     The original targets given in a problem such that we can rotate along
@@ -101,18 +118,18 @@ def get_all_illegal_positions(board, problem):
     return to_return
 
 
-def get_total_forbidden_positions(board, problem):
-    """
-    For each target of the problem we want to get the forbidden positions
-    of the target. So we get all the forbidden positions of the given problem.
-    :param board: The board in play
-    :param problem: The problem we want to solve
-    :return: A list of all forbidden positions of the given problem
-    """
-    forbidden_positions = []
-    for target in get_current_targets(board, problem):
-        forbidden_positions += get_forbidden_adjacent_positions(problem, target)
-    return forbidden_positions
+# def get_total_forbidden_positions(board, problem):
+#     """
+#     For each target of the problem we want to get the forbidden positions
+#     of the target. So we get all the forbidden positions of the given problem.
+#     :param board: The board in play
+#     :param problem: The problem we want to solve
+#     :return: A list of all forbidden positions of the given problem
+#     """
+#     forbidden_positions = []
+#     for target in get_current_targets(board, problem):
+#         forbidden_positions += get_forbidden_adjacent_positions(problem, target)
+#     return forbidden_positions
 
 
 def get_target_corners(board, problem):
@@ -156,19 +173,19 @@ def get_updated_board_legal_positions(board, problem):
     return board
 
 
-def is_state_authorized(board, problem):
-    """
-    Determines whether or not a given board is allowed according to whether
-    or not there are forbidden positions played in this board.
-    :param board: The board to check its validation
-    :param problem: The problem we want to solve
-    :return: True iff the
-    """
-    forbidden_positions = get_total_forbidden_positions(board, problem)
-    for pos in forbidden_positions:
-        if board.state.item(pos) != -1:
-            return False
-    return True
+# def is_state_authorized(board, problem):
+#     """
+#     Determines whether or not a given board is allowed according to whether
+#     or not there are forbidden positions played in this board.
+#     :param board: The board to check its validation
+#     :param problem: The problem we want to solve
+#     :return: True iff the
+#     """
+#     forbidden_positions = get_total_forbidden_positions(board, problem)
+#     for pos in forbidden_positions:
+#         if board.state.item(pos) != -1:
+#             return False
+#     return True
 
 
 def get_min_tiles_remained(board):
