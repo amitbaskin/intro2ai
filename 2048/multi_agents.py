@@ -48,12 +48,13 @@ class ReflexAgent(Agent):
         # Useful information you can extract from a GameState (game_state.py)
 
         successor_game_state = current_game_state.generate_successor(action=action)
-        board = successor_game_state.board
-        max_tile = successor_game_state.max_tile
-        score = successor_game_state.score
+        scores = []
 
-        "*** YOUR CODE HERE ***"
-        return score
+        for possible_action in successor_game_state.get_legal_actions(0):
+            state = successor_game_state.generate_successor(0, possible_action)
+            scores.append(state.score)
+
+        return max(scores)
 
 
 def score_evaluation_function(current_game_state):
@@ -91,6 +92,85 @@ class MultiAgentSearchAgent(Agent):
         return
 
 
+def minimax(currentDepth, currentState, base_score_function, targetDepthToAdd):
+    def minimax_algorithm(depth, cur_state, max_turn, base_score_function, target_depth, actions):
+        if depth == target_depth:
+            return base_score_function(cur_state), actions
+
+        if max_turn:
+            possible_states = []
+            for possible_action in cur_state.get_legal_actions(0):
+                state = cur_state.generate_successor(0, possible_action)
+                next_actions = list(actions)
+                next_actions.append(possible_action)
+                possible_states.append(minimax_algorithm(depth + 1, state, False,
+                                                        base_score_function, target_depth, next_actions))
+            if len(possible_states) == 0:
+                return 0, [Action.STOP]
+            return max(possible_states, key=lambda x: x[0])
+
+        else:
+            possible_states = []
+            for possible_action in cur_state.get_legal_actions(1):
+                state = cur_state.generate_successor(1, possible_action)
+                next_actions = list(actions)
+                next_actions.append(possible_action)
+                possible_states.append(minimax_algorithm(depth + 1, state, True,
+                                                        base_score_function, target_depth, next_actions))
+            if len(possible_states) == 0:
+                return 0, [Action.STOP]
+            return min(possible_states, key=lambda x: x[0])
+
+    return minimax_algorithm(currentDepth, currentState, True, base_score_function,
+                             currentDepth + targetDepthToAdd * 2, [])[1][0]
+
+
+def alpha_beta_pruning(currentDepth, currentState, base_score_function, targetDepthToAdd):
+    def alpha_beta_pruning_algorithm(depth, cur_state, max_turn, base_score_function, target_depth, alpha, beta,
+                                     actions):
+        if depth == target_depth:
+            return base_score_function(cur_state), actions
+
+        if max_turn:
+            possible_states = []
+            max_eval = -np.inf, [Action.STOP]
+            for possible_action in cur_state.get_legal_actions(0):
+                state = cur_state.generate_successor(0, possible_action)
+                next_actions = list(actions)
+                next_actions.append(possible_action)
+                curr_eval = alpha_beta_pruning_algorithm(depth + 1, state, False, base_score_function, target_depth,
+                                                         alpha, beta, next_actions)
+                possible_states.append(curr_eval)
+                max_eval = max(max_eval, curr_eval, key=lambda x: x[0])
+                alpha = max(alpha, curr_eval[0])
+                if beta <= alpha:
+                    break
+            if len(possible_states) == 0:
+                return 0, [Action.STOP]
+            return max(possible_states, key=lambda x: x[0])
+
+        else:
+            possible_states = []
+            min_eval = np.inf, [Action.STOP]
+            for possible_action in cur_state.get_legal_actions(1):
+                state = cur_state.generate_successor(1, possible_action)
+                next_actions = list(actions)
+                next_actions.append(possible_action)
+                curr_eval = alpha_beta_pruning_algorithm(depth + 1, state, True, base_score_function, target_depth,
+                                                         alpha, beta, next_actions)
+                possible_states.append(curr_eval)
+                min_eval = min(min_eval, curr_eval, key=lambda x: x[0])
+                beta = min(beta, curr_eval[0])
+                if beta <= alpha:
+                    break
+            if len(possible_states) == 0:
+                return 0, [Action.STOP]
+            return min(possible_states, key=lambda x: x[0])
+
+    return alpha_beta_pruning_algorithm(currentDepth, currentState, True, base_score_function,
+                                        currentDepth + targetDepthToAdd * 2, -np.inf, np.inf, [])[1][0]
+
+
 class MinmaxAgent(MultiAgentSearchAgent):
     def get_action(self, game_state):
         """
@@ -109,8 +189,7 @@ class MinmaxAgent(MultiAgentSearchAgent):
         game_state.generate_successor(agent_index, action):
             Returns the successor game state after an agent takes an action
         """
-        """*** YOUR CODE HERE ***"""
-        util.raiseNotDefined()
+        return minimax(0, game_state, score_evaluation_function, self.depth)
 
 
 
@@ -123,8 +202,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         """
         Returns the minimax action using self.depth and self.evaluationFunction
         """
-        """*** YOUR CODE HERE ***"""
-        util.raiseNotDefined()
+        return alpha_beta_pruning(0, game_state, score_evaluation_function, self.depth)
 
 
 
