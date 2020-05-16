@@ -106,7 +106,7 @@ def minimax(currentDepth, currentState, base_score_function, targetDepthToAdd):
                 possible_states.append(minimax_algorithm(depth + 1, state, False,
                                                         base_score_function, target_depth, next_actions))
             if len(possible_states) == 0:
-                return 0, [Action.STOP]
+                return np.inf, actions
             return max(possible_states, key=lambda x: x[0])
 
         else:
@@ -118,7 +118,7 @@ def minimax(currentDepth, currentState, base_score_function, targetDepthToAdd):
                 possible_states.append(minimax_algorithm(depth + 1, state, True,
                                                         base_score_function, target_depth, next_actions))
             if len(possible_states) == 0:
-                return 0, [Action.STOP]
+                return -np.inf, actions
             return min(possible_states, key=lambda x: x[0])
 
     return minimax_algorithm(currentDepth, currentState, True, base_score_function,
@@ -146,7 +146,7 @@ def alpha_beta_pruning(currentDepth, currentState, base_score_function, targetDe
                 if beta <= alpha:
                     break
             if len(possible_states) == 0:
-                return 0, [Action.STOP]
+                return np.inf, actions
             return max(possible_states, key=lambda x: x[0])
 
         else:
@@ -164,7 +164,7 @@ def alpha_beta_pruning(currentDepth, currentState, base_score_function, targetDe
                 if beta <= alpha:
                     break
             if len(possible_states) == 0:
-                return 0, [Action.STOP]
+                return -np.inf, actions
             return min(possible_states, key=lambda x: x[0])
 
     return alpha_beta_pruning_algorithm(currentDepth, currentState, True, base_score_function,
