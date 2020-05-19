@@ -46,13 +46,12 @@ class ReflexAgent(Agent):
         """
 
         # Useful information you can extract from a GameState (game_state.py)
+        # Note that this decides the score by using 2 player 0 actions in a row. This may not make sense for the game,
+        # but it's a heuristic.
 
         successor_game_state = current_game_state.generate_successor(action=action)
-        scores = []
-
-        for possible_action in successor_game_state.get_legal_actions(0):
-            state = successor_game_state.generate_successor(0, possible_action)
-            scores.append(state.score)
+        scores = [successor_game_state.generate_successor(0, possible_action).score for possible_action in
+                  successor_game_state.get_legal_actions(0)]
 
         return max(scores)
 
@@ -171,6 +170,53 @@ def alpha_beta_pruning(currentDepth, currentState, base_score_function, targetDe
                                         currentDepth + targetDepthToAdd * 2, -np.inf, np.inf, [])[1][0]
 
 
+def expectimax(currentDepth, currentState, base_score_function, targetDepthToAdd):
+    def expectimax_algorithm(depth, cur_state, max_turn, base_score_function, target_depth, action):
+        if depth == target_depth:
+            return base_score_function(cur_state), action
+
+        if max_turn:
+            possible_states = []
+            for possible_action in cur_state.get_legal_actions(0):
+                state = cur_state.generate_successor(0, possible_action)
+                if action is None:
+                    curr_action = possible_action
+                else:
+                    curr_action = action
+                possible_states.append(expectimax_algorithm(depth + 1, state, False,
+                                                            base_score_function, target_depth, curr_action))
+            if len(possible_states) == 0:
+                return np.inf, action
+            return max(possible_states, key=lambda x: x[0])
+
+        else:
+            possible_states = []
+            for possible_action in cur_state.get_legal_actions(1):
+                state = cur_state.generate_successor(1, possible_action)
+                if action is None:
+                    curr_action = possible_action
+                else:
+                    curr_action = action
+                possible_states.append(expectimax_algorithm(depth + 1, state, True,
+                                                            base_score_function, target_depth, curr_action))
+            if len(possible_states) == 0:
+                return -np.inf, action
+            mean = sum([score for score, _ in possible_states]) / len(possible_states)
+            return mean, action
+
+    a, b = expectimax_algorithm(currentDepth, currentState, True, base_score_function,
+                                currentDepth + targetDepthToAdd * 2, None)
+    return b
+
+
+def not_all_same(states):
+    curr_value = states[0][0]
+    for state in states:
+        if state[0] != curr_value:
+            return True
+    return False
+
+
 class MinmaxAgent(MultiAgentSearchAgent):
     def get_action(self, game_state):
         """
@@ -189,7 +235,7 @@ class MinmaxAgent(MultiAgentSearchAgent):
         game_state.generate_successor(agent_index, action):
             Returns the successor game state after an agent takes an action
         """
-        return minimax(0, game_state, score_evaluation_function, self.depth)
+        return minimax(0, game_state, self.evaluation_function, self.depth)
 
 
 
@@ -202,7 +248,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         """
         Returns the minimax action using self.depth and self.evaluationFunction
         """
-        return alpha_beta_pruning(0, game_state, score_evaluation_function, self.depth)
+        return alpha_beta_pruning(0, game_state, self.evaluation_function, self.depth)
 
 
 
@@ -218,11 +264,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         The opponent should be modeled as choosing uniformly at random from their
         legal moves.
         """
-        """*** YOUR CODE HERE ***"""
-        util.raiseNotDefined()
-
-
-
+        return expectimax(0, game_state, self.evaluation_function, self.depth)
 
 
 def better_evaluation_function(current_game_state):
@@ -231,8 +273,34 @@ def better_evaluation_function(current_game_state):
 
     DESCRIPTION: <write something here so we know what you did>
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    evaluations = []
+
+    for action in current_game_state.get_legal_actions(0):
+        successor_game_state = current_game_state.generate_successor(action=action)
+        # score = successor_game_state.score
+        # tile = successor_game_state.max_tile * 10
+        # empty_tiles = np.sum(successor_game_state.board == 0) * 2000
+        # sum_tiles = np.sum(successor_game_state.board)
+
+        for next_action in successor_game_state.get_legal_actions(0):
+            game_state = successor_game_state.generate_successor(0, action=next_action)
+            score = game_state.score
+            tile = game_state.max_tile * 10
+            empty_tiles = np.sum(game_state.board == 0) * 2000
+            sum_tiles = np.sum(game_state.board)
+
+        # max_score = max([successor_game_state.generate_successor(0, possible_action).score for possible_action in
+        #                  successor_game_state.get_legal_actions(0)])
+        # max_tile = max([successor_game_state.generate_successor(0, possible_action).max_tile for possible_action in
+        #                 successor_game_state.get_legal_actions(0)])
+
+            evaluations.append(0.1 * empty_tiles + 0.3 * tile + 0.4 * score + 0.2 * sum_tiles)
+
+    return max(evaluations) if len(evaluations) != 0 else current_game_state.score
+
+
+
 
 
 # Abbreviation

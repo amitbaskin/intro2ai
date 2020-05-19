@@ -74,4 +74,5 @@ class Game(object):
             opponent_action = self.opponent_agent.get_action(self._state)
             self._state.apply_opponent_action(opponent_action)
             self.display.update_state(self._state, action, opponent_action)
+        print(self._state.score, self._state.max_tile)
         return self._state.score, self._state.max_tile
