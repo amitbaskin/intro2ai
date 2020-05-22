@@ -274,6 +274,41 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         return expectimax(0, game_state, self.evaluation_function, self.depth)
 
 
+def board_monotonicity(board):
+    score = 0
+
+    score += np.sum(np.all((board[1:] >= board[:-1]) | (board[1:] == 0), axis=0))
+    score += np.sum(np.all((board[:, 1:] >= board[:, :-1]) | (board[:, 1:] == 0), axis=1))
+
+    score += np.sum(np.all((board[1:] <= board[:-1]) | (board[:-1] == 0), axis=0))
+    score += np.sum(np.all((board[:, 1:] <= board[:, :-1]) | (board[:, :-1] == 0), axis=1))
+
+    return score
+
+
+def board_smoothness(board):
+    score = 0
+
+    for i in range(board.shape[0]):
+        prev_cell = 0
+        for j in range(board.shape[1]):
+            if (abs(board[i, j] - prev_cell) > 0):
+                if prev_cell != 0 and board[i, j] != 0:
+                    score += abs(board[i, j] - prev_cell)
+            prev_cell = board[i, j]
+
+    board = board.T
+    for i in range(board.shape[0]):
+        prev_cell = 0
+        for j in range(board.shape[1]):
+            if (abs(board[i, j] - prev_cell) > 0):
+                if prev_cell != 0 and board[i, j] != 0:
+                    score += abs(board[i, j] - prev_cell)
+            prev_cell = board[i, j]
+
+    return -score
+
+
 def better_evaluation_function(current_game_state):
     """
     Your extreme 2048 evaluation function (question 5).
@@ -281,22 +316,15 @@ def better_evaluation_function(current_game_state):
     DESCRIPTION: <write something here so we know what you did>
     """
 
-    evaluations = []
+    monotonicity = board_monotonicity(current_game_state.board) * 150
+    smoothness = board_smoothness(current_game_state.board) * 10
+    empty_tiles = np.sum(current_game_state.board == 0) * 200
+    max_tile = current_game_state.max_tile * 10
+    score = current_game_state.score
+    sum_tiles = np.sum(current_game_state.board) * 15
 
-    for action in current_game_state.get_legal_actions(0):
-        successor_game_state = current_game_state.generate_successor(action=action)
-        for next_action in successor_game_state.get_legal_actions(0):
-            game_state = successor_game_state.generate_successor(0, action=next_action)
-            score = game_state.score
-            tile = game_state.max_tile * 10
-            empty_tiles = np.sum(game_state.board == 0) * 1500
-            sum_tiles = np.sum(game_state.board) * 5
-
-            evaluations.append(0.1 * empty_tiles + 0.5 * tile + 0.3 * score + 0.1 * sum_tiles)
-            # evaluations.append(score)
-
-    return max(evaluations) if len(evaluations) != 0 else current_game_state.score
-
+    return monotonicity + score + smoothness + empty_tiles + max_tile + sum_tiles
+    
 
 # Abbreviation
 better = better_evaluation_function
