@@ -92,86 +92,7 @@ class MultiAgentSearchAgent(Agent):
 
 
 def minimax(currentDepth, currentState, base_score_function, targetDepthToAdd):
-    def minimax_algorithm(depth, cur_state, max_turn, base_score_function, target_depth, actions):
-        if depth == target_depth:
-            return base_score_function(cur_state), actions
-
-        if max_turn:
-            possible_states = []
-            for possible_action in cur_state.get_legal_actions(0):
-                state = cur_state.generate_successor(0, possible_action)
-                next_actions = list(actions)
-                next_actions.append(possible_action)
-                possible_states.append(minimax_algorithm(depth + 1, state, False,
-                                                        base_score_function, target_depth, next_actions))
-            if len(possible_states) == 0:
-                return np.inf, actions
-            return max(possible_states, key=lambda x: x[0])
-
-        else:
-            possible_states = []
-            for possible_action in cur_state.get_legal_actions(1):
-                state = cur_state.generate_successor(1, possible_action)
-                next_actions = list(actions)
-                next_actions.append(possible_action)
-                possible_states.append(minimax_algorithm(depth + 1, state, True,
-                                                        base_score_function, target_depth, next_actions))
-            if len(possible_states) == 0:
-                return -np.inf, actions
-            return min(possible_states, key=lambda x: x[0])
-
-    return minimax_algorithm(currentDepth, currentState, True, base_score_function,
-                             currentDepth + targetDepthToAdd * 2, [])[1][0]
-
-
-def alpha_beta_pruning(currentDepth, currentState, base_score_function, targetDepthToAdd):
-    def alpha_beta_pruning_algorithm(depth, cur_state, max_turn, base_score_function, target_depth, alpha, beta,
-                                     actions):
-        if depth == target_depth:
-            return base_score_function(cur_state), actions
-
-        if max_turn:
-            possible_states = []
-            max_eval = -np.inf, [Action.STOP]
-            for possible_action in cur_state.get_legal_actions(0):
-                state = cur_state.generate_successor(0, possible_action)
-                next_actions = list(actions)
-                next_actions.append(possible_action)
-                curr_eval = alpha_beta_pruning_algorithm(depth + 1, state, False, base_score_function, target_depth,
-                                                         alpha, beta, next_actions)
-                possible_states.append(curr_eval)
-                max_eval = max(max_eval, curr_eval, key=lambda x: x[0])
-                alpha = max(alpha, curr_eval[0])
-                if beta <= alpha:
-                    break
-            if len(possible_states) == 0:
-                return np.inf, actions
-            return max(possible_states, key=lambda x: x[0])
-
-        else:
-            possible_states = []
-            min_eval = np.inf, [Action.STOP]
-            for possible_action in cur_state.get_legal_actions(1):
-                state = cur_state.generate_successor(1, possible_action)
-                next_actions = list(actions)
-                next_actions.append(possible_action)
-                curr_eval = alpha_beta_pruning_algorithm(depth + 1, state, True, base_score_function, target_depth,
-                                                         alpha, beta, next_actions)
-                possible_states.append(curr_eval)
-                min_eval = min(min_eval, curr_eval, key=lambda x: x[0])
-                beta = min(beta, curr_eval[0])
-                if beta <= alpha:
-                    break
-            if len(possible_states) == 0:
-                return -np.inf, actions
-            return min(possible_states, key=lambda x: x[0])
-
-    return alpha_beta_pruning_algorithm(currentDepth, currentState, True, base_score_function,
-                                        currentDepth + targetDepthToAdd * 2, -np.inf, np.inf, [])[1][0]
-
-
-def expectimax(currentDepth, currentState, base_score_function, targetDepthToAdd):
-    def expectimax_algorithm(depth, cur_state, max_turn, base_score_function, target_depth, action):
+    def minimax_algorithm(depth, cur_state, max_turn, base_score_function, target_depth, action):
         if depth == target_depth:
             return base_score_function(cur_state), action
 
@@ -183,10 +104,10 @@ def expectimax(currentDepth, currentState, base_score_function, targetDepthToAdd
                     curr_action = possible_action
                 else:
                     curr_action = action
-                possible_states.append(expectimax_algorithm(depth + 1, state, False,
-                                                            base_score_function, target_depth, curr_action))
+                possible_states.append(minimax_algorithm(depth + 1, state, False,
+                                                        base_score_function, target_depth, curr_action))
             if len(possible_states) == 0:
-                return np.inf, action
+                return -np.inf, action
             return max(possible_states, key=lambda x: x[0])
 
         else:
@@ -197,16 +118,102 @@ def expectimax(currentDepth, currentState, base_score_function, targetDepthToAdd
                     curr_action = possible_action
                 else:
                     curr_action = action
+                possible_states.append(minimax_algorithm(depth + 1, state, True,
+                                                        base_score_function, target_depth, curr_action))
+            if len(possible_states) == 0:
+                return base_score_function(cur_state), action
+            return min(possible_states, key=lambda x: x[0])
+
+    return minimax_algorithm(currentDepth, currentState, True, base_score_function,
+                             currentDepth + targetDepthToAdd * 2, None)[1]
+
+
+def alpha_beta_pruning(currentDepth, currentState, base_score_function, targetDepthToAdd):
+    def alpha_beta_pruning_algorithm(depth, cur_state, max_turn, base_score_function, target_depth, alpha, beta,
+                                     action):
+        if depth == target_depth:
+            return base_score_function(cur_state), action
+
+        if max_turn:
+            possible_states = []
+            max_eval = -np.inf, [Action.STOP]
+            for possible_action in cur_state.get_legal_actions(0):
+                state = cur_state.generate_successor(0, possible_action)
+                if action is None:
+                    curr_action = possible_action
+                else:
+                    curr_action = action
+                curr_eval = alpha_beta_pruning_algorithm(depth + 1, state, False, base_score_function, target_depth,
+                                                         alpha, beta, curr_action)
+                possible_states.append(curr_eval)
+                max_eval = max(max_eval, curr_eval, key=lambda x: x[0])
+                alpha = max(alpha, curr_eval[0])
+                if beta <= alpha:
+                    break
+            if len(possible_states) == 0:
+                return base_score_function(cur_state), action
+            return max(possible_states, key=lambda x: x[0])
+
+        else:
+            possible_states = []
+            min_eval = np.inf, [Action.STOP]
+            for possible_action in cur_state.get_legal_actions(1):
+                state = cur_state.generate_successor(1, possible_action)
+                if action is None:
+                    curr_action = possible_action
+                else:
+                    curr_action = action
+                curr_eval = alpha_beta_pruning_algorithm(depth + 1, state, True, base_score_function, target_depth,
+                                                         alpha, beta, curr_action)
+                possible_states.append(curr_eval)
+                min_eval = min(min_eval, curr_eval, key=lambda x: x[0])
+                beta = min(beta, curr_eval[0])
+                if beta <= alpha:
+                    break
+            if len(possible_states) == 0:
+                return base_score_function(cur_state), action
+            return min(possible_states, key=lambda x: x[0])
+
+    return alpha_beta_pruning_algorithm(currentDepth, currentState, True, base_score_function,
+                                        currentDepth + targetDepthToAdd * 2, -np.inf, np.inf, None)[1]
+
+
+def expectimax(currentDepth, currentState, base_score_function, targetDepthToAdd):
+    def expectimax_algorithm(depth, cur_state, max_turn, base_score_function, target_depth, action):
+        if depth == target_depth:
+            return base_score_function(cur_state), action
+
+        if max_turn:
+            possible_states = []
+            for possible_action in cur_state.get_agent_legal_actions():
+                state = cur_state.generate_successor(0, possible_action)
+                if depth == 0:
+                    curr_action = possible_action
+                else:
+                    curr_action = action
+                possible_states.append(expectimax_algorithm(depth + 1, state, False,
+                                                            base_score_function, target_depth, curr_action))
+            if len(possible_states) == 0:
+                return base_score_function(cur_state), action
+            return max(possible_states, key=lambda x: x[0])
+
+        else:
+            possible_states = []
+            for possible_action in cur_state.get_opponent_legal_actions():
+                state = cur_state.generate_successor(1, possible_action)
+                if depth == 0:
+                    curr_action = possible_action
+                else:
+                    curr_action = action
                 possible_states.append(expectimax_algorithm(depth + 1, state, True,
                                                             base_score_function, target_depth, curr_action))
             if len(possible_states) == 0:
-                return -np.inf, action
+                return base_score_function(cur_state), action
             mean = sum([score for score, _ in possible_states]) / len(possible_states)
             return mean, action
 
-    a, b = expectimax_algorithm(currentDepth, currentState, True, base_score_function,
-                                currentDepth + targetDepthToAdd * 2, None)
-    return b
+    return expectimax_algorithm(currentDepth, currentState, True, base_score_function,
+                                currentDepth + targetDepthToAdd * 2, None)[1]
 
 
 def not_all_same(states):
@@ -278,29 +285,17 @@ def better_evaluation_function(current_game_state):
 
     for action in current_game_state.get_legal_actions(0):
         successor_game_state = current_game_state.generate_successor(action=action)
-        # score = successor_game_state.score
-        # tile = successor_game_state.max_tile * 10
-        # empty_tiles = np.sum(successor_game_state.board == 0) * 2000
-        # sum_tiles = np.sum(successor_game_state.board)
-
         for next_action in successor_game_state.get_legal_actions(0):
             game_state = successor_game_state.generate_successor(0, action=next_action)
             score = game_state.score
             tile = game_state.max_tile * 10
-            empty_tiles = np.sum(game_state.board == 0) * 2000
-            sum_tiles = np.sum(game_state.board)
+            empty_tiles = np.sum(game_state.board == 0) * 1500
+            sum_tiles = np.sum(game_state.board) * 5
 
-        # max_score = max([successor_game_state.generate_successor(0, possible_action).score for possible_action in
-        #                  successor_game_state.get_legal_actions(0)])
-        # max_tile = max([successor_game_state.generate_successor(0, possible_action).max_tile for possible_action in
-        #                 successor_game_state.get_legal_actions(0)])
-
-            evaluations.append(0.1 * empty_tiles + 0.3 * tile + 0.4 * score + 0.2 * sum_tiles)
+            evaluations.append(0.1 * empty_tiles + 0.5 * tile + 0.3 * score + 0.1 * sum_tiles)
+            # evaluations.append(score)
 
     return max(evaluations) if len(evaluations) != 0 else current_game_state.score
-
-
-
 
 
 # Abbreviation
