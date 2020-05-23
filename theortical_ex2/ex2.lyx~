@@ -1,0 +1,800 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass heb-article
+\use_default_options true
+\maintain_unincluded_children false
+\language hebrew
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\rightmargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "../../shortcuts.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Title
+מבוא לבינה מלאכותית - תרגיל
+\family roman
+\series medium
+\shape up
+\size largest
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ תיאורטי 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+2
+\end_layout
+
+\begin_layout Author
+רון יצחק
+\family roman
+\series medium
+\shape up
+\size large
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+311604938
+\numeric off
+, עמית בסקין
+\family roman
+\series medium
+\shape up
+\size large
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+312259013
+\end_layout
+
+\begin_layout Part*
+\begin_inset Formula $0.1$
+\end_inset
+
+ מינימקס על עץ
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename q0.1.png
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+ולכן על האלגוריתם לבחור ב-
+\begin_inset Formula $\text{right}$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part*
+\begin_inset Formula $0.2$
+\end_inset
+
+ אלפא בטא על עץ
+\end_layout
+
+\begin_layout Enumerate
+הרי הגרף:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename q0.2.png
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+ולכן על האלגוריתם לבחור ב-
+\begin_inset Formula $\text{right}$
+\end_inset
+
+.
+ באופן כללי, האלגוריתם עובד באותה הצורה, הוא פשוט חוסך בדיקות מיותרות.
+\end_layout
+
+\begin_layout Part*
+\begin_inset Formula $0.3$
+\end_inset
+
+ אלפא בטא אופטימיזאציה על עץ
+\end_layout
+
+\begin_layout Enumerate
+הרי הגרף:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename q0.3.png
+	scale 70
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+הפכנו גם את 
+\begin_inset Formula $B,C$
+\end_inset
+
+ וגם את 
+\begin_inset Formula $G,F$
+\end_inset
+
+ ואת 
+\begin_inset Formula $E,D$
+\end_inset
+
+.
+ זאת מכיוון שרצינו שהתור של 
+\begin_inset Formula $MAX$
+\end_inset
+
+ ייראה קודם את הענף שבו יש את הערך המקסימאלי,
+\begin_inset Newline newline
+\end_inset
+
+ובאותה הצורה רצינו שהתור של 
+\begin_inset Formula $MIN$
+\end_inset
+
+ ייראה קודם את הענף שבו יש את הערך המינימאלי.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\numeric on
+11
+\numeric off
+.
+\end_layout
+
+\begin_layout Part*
+\begin_inset Formula $0.4$
+\end_inset
+
+ איקס עיגול
+\end_layout
+
+\begin_layout Enumerate
+בערך
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+250
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אלף.....
+ בסקין ימשיך.
+\end_layout
+
+\begin_layout Enumerate
+הרי העץ:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename q0.4.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+הרי העץ:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename q0.4.2.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+הרי העץ:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename q0.4.3.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+הרי העץ:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename q0.4.4.png
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part*
+ייצוג ידע
+\end_layout
+
+\begin_layout Section*
+
+\numeric on
+1.1
+\family roman
+\series bold
+\shape up
+\size larger
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+המרה לצורת 
+\begin_inset Formula $\text{clause}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\forall x\ :\ \left[P_{1}\left(x\right)\land P_{2}\left(x,A\right)\right]\Ra\left[P_{3}\left(x,B\right)\lor\left(\forall y\ :\ \exists z\ :\ P_{3}\left(y,z\right)\Ra P_{4}\left(x,y\right)\right)\right]
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\forall x\ :\ \left[P_{1}\left(x\right)\land P_{2}\left(x,A\right)\right]\Ra\left[P_{3}\left(x,B\right)\lor\left(\forall y\ :\ P_{3}\left(y,G\left(y\right)\right)\Ra P_{4}\left(x,y\right)\right)\right]
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left[P_{1}\left(x\right)\land P_{2}\left(x,A\right)\right]\Ra\left[P_{3}\left(x,B\right)\lor\left(P_{3}\left(y,G\left(y\right)\right)\Ra P_{4}\left(x,y\right)\right)\right]
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left[P_{1}\left(x\right)\land P_{2}\left(x,A\right)\right]\Ra\left[P_{3}\left(x,B\right)\lor\left(\lnot P_{3}\left(y,G\left(y\right)\right)\lor P_{4}\left(x,y\right)\right)\right]
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left[P_{1}\left(x\right)\land P_{2}\left(x,A\right)\right]\Ra\left[P_{3}\left(x,B\right)\lor\lnot P_{3}\left(y,G\left(y\right)\right)\lor P_{4}\left(x,y\right)\right]
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\lnot\left[P_{1}\left(x\right)\land P_{2}\left(x,A\right)\right]\lor\left[P_{3}\left(x,B\right)\lor\lnot P_{3}\left(y,G\left(y\right)\right)\lor P_{4}\left(x,y\right)\right]
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left[\lnot P_{1}\left(x\right)\lor\lnot P_{2}\left(x,A\right)\right]\lor\left[P_{3}\left(x,B\right)\lor\lnot P_{3}\left(y,G\left(y\right)\right)\lor P_{4}\left(x,y\right)\right]
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\lnot P_{1}\left(x\right)\lor\lnot P_{2}\left(x,A\right)\lor P_{3}\left(x,B\right)\lor\lnot P_{3}\left(y,G\left(y\right)\right)\lor P_{4}\left(x,y\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left\{ \lnot P_{1}\left(x\right),\lnot P_{2}\left(x,A\right),P_{3}\left(x,B\right),\lnot P_{3}\left(y,G\left(y\right)\right),P_{4}\left(x,y\right)\right\} 
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\left(P\Ra Q\right)\Ra\left(\left(Q\Ra R\right)\Ra\left(P\Ra R\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left(\lnot P\lor Q\right)\Ra\left(\left(\lnot Q\lor R\right)\Ra\left(\lnot P\lor R\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left(\lnot P\lor Q\right)\Ra\left(\lnot\left(\lnot Q\lor R\right)\lor\left(\lnot P\lor R\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left(\lnot P\lor Q\right)\Ra\left(\left(Q\land\lnot R\right)\lor\left(\lnot P\lor R\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\lnot\left(\lnot P\lor Q\right)\lor\left(\left(Q\land\lnot R\right)\lor\left(\lnot P\lor R\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left(P\land\lnot Q\right)\lor\left(\left(Q\land\lnot R\right)\lor\left(\lnot P\lor R\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left(P\land\lnot Q\right)\lor\left(\left(Q\lor\lnot P\lor R\right)\land\left(\lnot R\lor\lnot P\lor R\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left(P\land\lnot Q\right)\lor\left(Q\lor\lnot P\lor R\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left(P\lor Q\lor\lnot P\lor R\right)\land\left(\lnot Q\lor Q\lor\lnot P\lor R\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+T
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
