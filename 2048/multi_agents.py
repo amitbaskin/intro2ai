@@ -314,8 +314,8 @@ def biggest_num_in_corner(board):
     highest_tile_locations = np.argwhere(board == np.amax(board))
     h, w = board.shape
     for location in highest_tile_locations:
-        if np.all(location == [0, 0]) or np.all(location == [0, w]) or \
-           np.all(location == [h, 0]) or np.all(location == [h, w]):
+        if np.all(location == [0, 0]) or np.all(location == [0, w - 1]) or \
+           np.all(location == [h - 1, 0]) or np.all(location == [h - 1, w - 1]):
             return board.max()
     return 0
 
@@ -343,12 +343,12 @@ def better_evaluation_function(current_game_state):
 
     All these heuristics are weighed in a manner such that they are all of the same order of magnitude more or less.
     """
-    monotonicity = board_monotonicity(current_game_state.board) * 150
+    monotonicity = board_monotonicity(current_game_state.board) * 300
     smoothness = board_smoothness(current_game_state.board) * 10
     empty_tiles = np.sum(current_game_state.board == 0) * 200
     max_tile = current_game_state.max_tile * 10
     sum_tiles = np.sum(current_game_state.board) * 15
-    in_corner = biggest_num_in_corner(current_game_state.board) * 10
+    in_corner = biggest_num_in_corner(current_game_state.board) * 100
     score = current_game_state.score
 
     return monotonicity + score + smoothness + empty_tiles + max_tile + sum_tiles + in_corner
