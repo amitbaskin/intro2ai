@@ -2335,7 +2335,7 @@ status open
 
 \begin_inset Formula 
 \[
-\left(P\land\lnot Q\right)\lor\left(\left(Q\lor\lnot P\lor R\right)\land\left(\lnot R\lor\lnot P\lor R\right)\right)
+\left(P\land\lnot Q\right)\lor\left(\left(Q\lor\lnot P\lor R\right)\land\left(\cancel{\lnot R}\lor\lnot P\lor\cancel{R}\right)\right)
 \]
 
 \end_inset
@@ -2351,7 +2351,15 @@ status open
 
 \begin_inset Formula 
 \[
-\left(P\lor Q\lor\lnot P\lor R\right)\land\left(\lnot Q\lor Q\lor\lnot P\lor R\right)
+\left(\cancel{P}\lor Q\lor\cancel{\lnot P}\lor R\right)\land\left(\cancel{\lnot Q}\lor\cancel{Q}\lor\lnot P\lor R\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+T\land T
 \]
 
 \end_inset
@@ -2368,7 +2376,11 @@ T
 \end_layout
 
 \begin_layout Subsection
-אנגלית ללוגיקה
+אנגלית 
+\begin_inset Formula $\la$
+\end_inset
+
+ לוגיקה
 \end_layout
 
 \begin_layout Enumerate
@@ -2401,7 +2413,7 @@ T
 
 \begin_inset Formula 
 \[
-\forall x\left[\left(Driver\left(x\right)\land\left(FasterThan65\left(x\right)\lor CrossRedLight\left(x\right)\right)\right)\implies SpeedTicket(x)\right]
+\forall x\left[\left(Driver\left(x\right)\land\left(FasterThan65\left(x\right)\lor CrossRedLight\left(x\right)\right)\right)\implies Ticket(x)\right]
 \]
 
 \end_inset
@@ -2411,6 +2423,397 @@ T
 
 \begin_layout Subsection
 המאחד הכללי ביותר
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset Formula $Color\left(Hat\left(Postman\right),Blue\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $Color\left(Hat\left(y\right),x\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{Unify\left(\left[Color\left(Hat\left(Postman\right),Blue\right)\right],\left[Color\left(Hat\left(y\right),x\right)\right]\right)}=\left\{ y/Postman,x/Blue\right\} 
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset Formula $R\left(F\left(y\right),y,x\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $R\left(x,F\left(A\right),F\left(v\right)\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{Unify\left(\left[R\left(x,F\left(A\right),F\left(v\right)\right)\right],\left[R\left(F\left(y\right),y,x\right)\right]\right)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\begin{cases}
+R\left(F\left(y\right),y,x\right)\\
+R\left(x,F\left(A\right),F\left(v\right)\right)
+\end{cases}
+\]
+
+\end_inset
+
+
+\begin_inset Formula $fail$
+\end_inset
+
+ כי ב-
+\begin_inset Formula $b$
+\end_inset
+
+ אי-אפשר להחליף 
+\begin_inset Formula $x$
+\end_inset
+
+ ב- 
+\begin_inset Formula $F\left(y\right)$
+\end_inset
+
+ כי אז גם ב-
+\begin_inset Formula $a$
+\end_inset
+
+ יתבצע החילוף אבל 
+\begin_inset Formula $F\left(y\right)$
+\end_inset
+
+ כבר נמצא שם וגם אי-אפשר להחליף 
+\begin_inset Formula $F\left(y\right)$
+\end_inset
+
+ ב-
+\begin_inset Formula $x$
+\end_inset
+
+ כי 
+\begin_inset Formula $x$
+\end_inset
+
+ כבר נמצא ב-
+\begin_inset Formula $a$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset Formula $Loves\left(x,y\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $Loves\left(y,x\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{Unify\left(\left[Loves\left(x,y\right)\right],\left[Loves\left(y,x\right)\right]\right)}
+\]
+
+\end_inset
+
+
+\begin_inset Formula $fail$
+\end_inset
+
+ כי ב-
+\begin_inset Formula $a$
+\end_inset
+
+ אי-אפשר להחליף 
+\begin_inset Formula $x$
+\end_inset
+
+ ב- 
+\begin_inset Formula $y$
+\end_inset
+
+ כי 
+\begin_inset Formula $y$
+\end_inset
+
+ כבר נמצא שם וגם אי-אפשר להחליף 
+\begin_inset Formula $y$
+\end_inset
+
+ ב-
+\begin_inset Formula $x$
+\end_inset
+
+ כי 
+\begin_inset Formula $x$
+\end_inset
+
+ כבר נמצא שם.
+\begin_inset Newline newline
+\end_inset
+
+אחרת נקבל 
+\begin_inset Formula 
+\[
+Loves\left(x,x\right)
+\]
+
+\end_inset
+
+ או
+\begin_inset Formula 
+\[
+Loves\left(y,y\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+רזולוציה
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\left\{ p\left(a\right),q\left(a\right)\right\} ,\left\{ \lnot p\left(x\right),r\left(x\right)\right\} ,\left\{ \lnot q\left(a\right)\right\} 
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left\{ p\left(a\right),q\left(a\right)\right\} ,\left\{ \lnot p\left(a\right),r\left(a\right)\right\} ,\left\{ \lnot q\left(a\right)\right\} 
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left\{ r\left(a\right),q\left(a\right)\right\} ,\left\{ \lnot q\left(a\right)\right\} 
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left\{ r\left(a\right),q\left(a\right)\right\} ,\left\{ \lnot q\left(a\right)\right\} 
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left\{ r\left(a\right)\right\} 
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\forall x\ p\left(x\right)\Ra q\left(x\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\lnot p\left(x\right)\lor q\left(x\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left(\forall x\ \lnot p\left(x\right)\right)\lor\left(\forall x\ q\left(x\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\forall x\ p\left(x\right)\Ra\forall x\ q\left(x\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\forall x\ \left(\left(\left(p\left(x\right)\Ra q\left(x\right)\right)\Ra p\left(x\right)\right)\Ra p\left(x\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left(\left(p\left(x\right)\Ra q\left(x\right)\right)\Ra p\left(x\right)\right)\Ra p\left(x\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left(\left(\lnot p\left(x\right)\lor q\left(x\right)\right)\Ra p\left(x\right)\right)\Ra p\left(x\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left(\lnot\left(\lnot p\left(x\right)\lor q\left(x\right)\right)\lor p\left(x\right)\right)\Ra p\left(x\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\lnot\left(\lnot\left(\lnot p\left(x\right)\lor q\left(x\right)\right)\lor p\left(x\right)\right)\lor p\left(x\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\lnot\left(\left(p\left(x\right)\land\lnot q\left(x\right)\right)\land\lnot p\left(x\right)\right)\lor p\left(x\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left(\lnot\left(p\left(x\right)\land\lnot q\left(x\right)\right)\lor p\left(x\right)\right)\lor p\left(x\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left(\left(\lnot p\left(x\right)\lor q\left(x\right)\right)\lor p\left(x\right)\right)\lor p\left(x\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\cancel{\lnot p\left(x\right)}\lor q\left(x\right)\lor\cancel{p\left(x\right)}\lor p\left(x\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+T
+\]
+
+\end_inset
+
+
 \end_layout
 
 \end_body
