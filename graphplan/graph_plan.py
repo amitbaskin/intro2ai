@@ -223,10 +223,11 @@ def independent_pair(a1, a2):
     a1.get_pre() returns the pre list of a1
     a1.get_add() returns the add list of a1
     a1.get_delete() return the del list of a1
-    a1.is_pre_cond(p) returns true is p is in a1.get_add()
+    a1.is_pre_cond(p) returns true is p is in a1.get_pre()
     a1.is_pos_effect(p) returns true is p is in a1.get_add()
     a1.is_neg_effect(p) returns true is p is in a1.get_delete()
     """
+    # Inconsistent effects
     for cond in a1.get_delete():
         if a2.is_pos_effect(cond):
             return False
@@ -234,15 +235,8 @@ def independent_pair(a1, a2):
     for cond in a2.get_delete():
         if a1.is_pos_effect(cond):
             return False
-
-    for cond in a1.get_add():
-        if a2.is_neg_effect(cond):
-            return False
-
-    for cond in a2.get_add():
-        if a1.is_neg_effect(cond):
-            return False
-
+        
+    # Interference
     for cond in a1.get_pre():
         if a2.is_neg_effect(cond):
             return False
