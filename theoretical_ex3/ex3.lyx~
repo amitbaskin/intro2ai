@@ -1,0 +1,837 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass heb-article
+\use_default_options true
+\maintain_unincluded_children false
+\language hebrew
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\rightmargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "../../shortcuts.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Title
+מבוא לבינה מלאכותית ימח שמם - תרגיל
+\family roman
+\series medium
+\shape up
+\size largest
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+תיאורתי
+\family roman
+\series medium
+\shape up
+\size largest
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+2
+\end_layout
+
+\begin_layout Author
+רון יצחק
+\family roman
+\series medium
+\shape up
+\size large
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+311604938
+\numeric off
+, עמית בסקין 
+\numeric on
+312259013
+\end_layout
+
+\begin_layout Part
+\begin_inset Formula $\text{Resolution}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+נתחיל בלהעביר את הנתונים לפסוקים לוגים:
+\begin_inset Formula 
+\[
+\text{Club}\left(\text{Athos}\right),\ \text{Club}\left(\text{Aramis}\right),\ \text{Club}\left(\text{Porthos}\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\forall x\left(\text{Club}\left(x\right)\Ra\text{Skier}\left(x\right)\lor\text{Climber}\left(x\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\forall y\left(\text{Climber}\left(y\right)\Ra\lnot\text{Likes}\left(y,\text{Rain}\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\forall z\left(\text{Skier}\left(z\right)\Ra\text{Likes}\left(z,\text{Snow}\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\forall j\left(\text{Likes}(\text{Athos},j)\Ra\lnot\text{Likes}\left(\text{Porthos},j\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\forall i\left(\lnot\text{Likes}(\text{Athos},i)\Ra\text{Likes}\left(\text{Porthos},i\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\text{Likes}\left(\text{Athos},\text{Rain}\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\text{Likes}\left(\text{Athos},\text{Snow}\right)
+\]
+
+\end_inset
+
+נעביר את הנתונים ל-
+\begin_inset Formula $\text{CNF}$
+\end_inset
+
+:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\text{Club}\left(\text{Athos}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\text{Club}\left(\text{Aramis}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\text{Club}\left(\text{Porthos}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\lnot\text{Club}\left(x\right)\lor\text{Skier}\left(x\right)\lor\text{Climber}\left(x\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\lnot\text{Climber}\left(y\right)\lor\lnot\text{Likes}\left(y,\text{Rain}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\lnot\text{Skier}\left(z\right)\lor\text{Likes}\left(z,\text{Snow}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\lnot\text{Likes}(\text{Athos},j)\lor\lnot\text{Likes}\left(\text{Porthos},j\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\text{Likes}(\text{Athos},i)\lor\text{Likes}\left(\text{Porthos},i\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\text{Likes}\left(\text{Athos},\text{Rain}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\text{Likes}\left(\text{Athos},\text{Snow}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+אנו מחפשים:
+\begin_inset Formula 
+\[
+\exists w\left(\text{Club}\left(w\right)\land\text{Climber}\left(w\right)\land\lnot\text{Skier}\left(w\right)\right)
+\]
+
+\end_inset
+
+נוסיף את התנאי בשלילתו ל-
+\begin_inset Formula $\text{KB}$
+\end_inset
+
+ וננסה למצוא סתירה:
+\begin_inset Formula 
+\[
+\forall w\left(\lnot\text{Club}\left(w\right)\lor\lnot\text{Climber}\left(w\right)\lor\text{Skier}\left(w\right)\right)
+\]
+
+\end_inset
+
+נפשט ל-
+\begin_inset Formula $\text{CNF}$
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\lnot\text{Club}\left(w\right)\lor\lnot\text{Climber}\left(w\right)\lor\text{Skier}\left(w\right)
+\]
+
+\end_inset
+
+ולכן לנקבל את ה-
+\begin_inset Formula $\text{KB}$
+\end_inset
+
+ הבא:
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\text{Club}\left(\text{Athos}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\text{Club}\left(\text{Aramis}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\text{Club}\left(\text{Porthos}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\lnot\text{Club}\left(x\right)\lor\text{Skier}\left(x\right)\lor\text{Climber}\left(x\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\lnot\text{Climber}\left(y\right)\lor\lnot\text{Likes}\left(y,\text{Rain}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\lnot\text{Skier}\left(z\right)\lor\text{Likes}\left(z,\text{Snow}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\lnot\text{Likes}(\text{Athos},j)\lor\lnot\text{Likes}\left(\text{Porthos},j\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\text{Likes}(\text{Athos},i)\lor\text{Likes}\left(\text{Porthos},i\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\text{Likes}\left(\text{Athos},\text{Rain}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\text{Likes}\left(\text{Athos},\text{Snow}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\lnot\text{Club}\left(w\right)\lor\lnot\text{Climber}\left(w\right)\lor\text{Skier}\left(w\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+נשים לב ש-
+\begin_inset Formula $\text{Porthos}$
+\end_inset
+
+ יביא לסתירה בצורה הבאה:
+\begin_inset Formula 
+\[
+\left(c\right),\left(d\right),\left(k\right)\to
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\text{Club}\left(\text{Porthos}\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\cancel{\lnot\text{Club}\left(\text{Porthos}\right)}\lor\text{Skier}\left(\text{Porthos}\right)\lor\cancel{\text{Climber}\left(\text{Porthos}\right)}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\cancel{\lnot\text{Club}\left(\text{Porthos}\right)}\lor\cancel{\lnot\text{Climber}\left(\text{Porthos}\right)}\lor\text{Skier}\left(\text{Porthos}\right)
+\]
+
+\end_inset
+
+לכן נקבל ש-
+\begin_inset Formula 
+\[
+\text{Skier}\left(\text{Porthos}\right)
+\]
+
+\end_inset
+
+בנוסף, נתבונן ב-
+\begin_inset Formula 
+\[
+\left(g\right),\left(j\right)\to
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\lnot\text{Likes}(\text{Athos},\text{Snow})\lor\lnot\text{Likes}\left(\text{Porthos},\text{Snow}\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\text{Likes}\left(\text{Athos},\text{Snow}\right)
+\]
+
+\end_inset
+
+לכן:
+\begin_inset Formula 
+\[
+\lnot\text{Likes}\left(\text{Porthos},\text{Snow}\right)
+\]
+
+\end_inset
+
+כעת נחבר את זה עם 
+\begin_inset Formula $\left(f\right)$
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+\cancel{\lnot\text{Likes}\left(\text{Porthos},\text{Snow}\right)}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\lnot\text{Skier}\left(\text{Porthos}\right)\lor\cancel{\text{Likes}\left(\text{Porthos},\text{Snow}\right)}
+\]
+
+\end_inset
+
+ונקבל:
+\begin_inset Formula 
+\[
+\lnot\text{Skier}\left(\text{Porthos}\right)
+\]
+
+\end_inset
+
+אבל נשים לב כעת שקיבלנו סתירה, שכן )לפי טאוטולוגיה(:
+\begin_inset Formula 
+\[
+\lnot\text{Skier}\left(\text{Porthos}\right)\land\text{Skier}\left(\text{Porthos}\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\{\}
+\]
+
+\end_inset
+
+ולכן הטענה המקורית נכונה.
+\begin_inset Newline newline
+\end_inset
+
+השתמשנו ב-
+\begin_inset Formula $\text{Linear Resoultion}$
+\end_inset
+
+ לאורך כל הדרך.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+"\text{Horses are animals}"
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\forall x\left(\text{Horse}\left(x\right)\Ra\text{Animal}\left(x\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\lnot\text{Horse}\left(x\right)\lor\text{Animal}\left(x\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+"\text{The head of a horse is the head of an animal}"
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\forall y,z\left(\text{Horse}\left(y\right)\land\text{HeadOf}\left(z,y\right)\Ra\text{Animal}\left(y\right)\land\text{HeadOf}\left(z,y\right)\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\text{Premise: }\lnot\text{Horse}\left(x\right)\lor\text{Animal}\left(x\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\text{Conclusion: }\lnot\text{Horse}\left(y\right)\lor\lnot\text{HeadOf}\left(z,y\right)\lor\left(\text{Animal}\left(y\right)\land\text{HeadOf}\left(z,y\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left(\lnot\text{Horse}\left(y\right)\lor\lnot\text{HeadOf}\left(z,y\right)\lor\text{HeadOf}\left(z,y\right)\right)\land\left(\lnot\text{Horse}\left(y\right)\lor\lnot\text{HeadOf}\left(z,y\right)\lor\text{Animal}\left(y\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\left(\lnot\text{Horse}\left(y\right)\lor\cancel{\lnot\text{HeadOf}\left(z,y\right)}\lor\cancel{\text{HeadOf}\left(z,y\right)}\right)\land\left(\lnot\text{Horse}\left(y\right)\lor\lnot\text{HeadOf}\left(z,y\right)\lor\text{Animal}\left(y\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\lnot\text{Horse}\left(y\right)\lor\lnot\text{HeadOf}\left(z,y\right)\lor\text{Animal}\left(y\right)
+\]
+
+\end_inset
+
+שוללים את ההנחה:
+\begin_inset Formula 
+\[
+\lnot\left[\lnot\text{Horse}\left(y\right)\lor\lnot\text{HeadOf}\left(z,y\right)\lor\text{Animal}\left(y\right)\right]
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\text{Horse}\left(y\right)\land\text{HeadOf}\left(z,y\right)\land\lnot\text{Animal}\left(y\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\text{Horse}\left(y\right)\land\text{HeadOf}\left(z,y\right)\land\lnot\text{Animal}\left(y\right)\land\left(\lnot\text{Horse}\left(y\right)\lor\text{Animal}\left(y\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\text{Horse}\left(y\right)\land\text{HeadOf}\left(z,y\right)\land\lnot\text{Animal}\left(y\right)\land\left(\cancel{\lnot\text{Horse}\left(y\right)}\lor\text{Animal}\left(y\right)\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\text{Horse}\left(y\right)\land\text{HeadOf}\left(z,y\right)\land\lnot\text{Animal}\left(y\right)\land\text{Animal}\left(y\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\{\}
+\]
+
+\end_inset
+
+קיבלנו סתירה כנדרש.
+\end_layout
+
+\end_deeper
+\begin_layout Part
+\begin_inset Formula $\text{Planning}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename pasted1.png
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

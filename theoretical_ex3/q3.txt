@@ -1,0 +1,37 @@
+Variables:
+n block variables
+for i from 0 to n:
+	at-Block-i at {table, crane, on Block-j}
+
+Operators:
+pick(Block-i)
+	pre: at-Block-i at table
+	     for all Block-j:
+	     	not at-Block-j at crane
+	eff: at-Block-i at crane
+drop(Block-i)
+	pre: at-Block-i at crane
+	eff: at-Block-i at table
+stack(Block-i, Block-j)
+	pre: at-Block-i at crane
+	     for all Block-k:
+	     	not at-Block-k on Block-j
+	eff: at-Block-i on Block-j
+unstack(Block-i, Block-j)
+	pre: for all Block-k:
+	     	not at-Block-k at crane
+	     for all Block-k:
+	     	not at-Block-k on Block-i
+	eff: at-Block-i at Crane
+
+Init:
+for i from 0 to n-1:
+	at-Block-i on Block-(i+1)
+at-Block-n at table
+
+Goal:
+for i from 0 to n-3:
+	at-Block-i on Block-(i+1)
+at-Block-(n-2) on Block-n
+at-Block-n on Block-(n-1)
+at-Block-(n-1) at table
