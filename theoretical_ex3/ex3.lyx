@@ -825,8 +825,10 @@ status open
 \end_layout
 
 \begin_layout Standard
+\align left
 \begin_inset Graphics
 	filename pasted1.png
+	scale 60
 
 \end_inset
 
