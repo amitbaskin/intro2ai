@@ -203,6 +203,6 @@ def mutex_propositions(prop1, prop2, mutex_actions_list):
     for producer1 in prop1.get_producers():
         for producer2 in prop2.get_producers():
             if producer1 != producer2:
-                if Pair(producer1, producer2) in mutex_actions_list:
-                    return True
-    return False
+                if Pair(producer1, producer2) not in mutex_actions_list:
+                    return False
+    return True
