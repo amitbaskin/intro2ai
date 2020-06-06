@@ -103,7 +103,7 @@ filename "../../shortcuts.lyx"
 \uwave off
 \noun off
 \color none
- תיאורטי 
+ תיאורתי 
 \family default
 \series default
 \shape default
@@ -180,11 +180,8 @@ filename "../../shortcuts.lyx"
 312259013
 \end_layout
 
-\begin_layout Part*
-\begin_inset Formula $0.1$
-\end_inset
-
- מינימקס על עץ
+\begin_layout Subsection
+מינימקס על עץ
 \end_layout
 
 \begin_layout Standard
@@ -231,11 +228,8 @@ status open
 
 \end_layout
 
-\begin_layout Part*
-\begin_inset Formula $0.2$
-\end_inset
-
- אלפא בטא על עץ
+\begin_layout Subsection
+אלפא בטא על עץ
 \end_layout
 
 \begin_layout Enumerate
@@ -287,11 +281,8 @@ status open
  באופן כללי, האלגוריתם עובד באותה הצורה, הוא פשוט חוסך בדיקות מיותרות.
 \end_layout
 
-\begin_layout Part*
-\begin_inset Formula $0.3$
-\end_inset
-
- אלפא בטא אופטימיזאציה על עץ
+\begin_layout Subsection
+אלפא בטא אופטימיזאציה על עץ
 \end_layout
 
 \begin_layout Enumerate
@@ -371,42 +362,34 @@ status open
 .
 \end_layout
 
-\begin_layout Part*
-\begin_inset Formula $0.4$
-\end_inset
-
- איקס עיגול
+\begin_layout Subsection
+איקס עיגול
 \end_layout
 
 \begin_layout Enumerate
-בערך
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\strikeout off
-\xout off
-\uuline off
-\uwave off
-\noun off
-\color none
- 
-\family default
-\series default
-\shape default
-\size default
-\emph default
+נחלק למקרים )מאחר שמדובר רק בהערכה, לא נחסר מצבים שבהם גם עיגול וגם איקס
+ מנצחים )גורם יחסית זניח בחישוב((: 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+איקס מנצח:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+)חישוב זניח שנקזז בסוף עם מה שלא חיסרנו(: איקס מנצח תוך 
+\begin_inset Formula $3$
+\end_inset
+
+ מהלכים: 
+\begin_inset Formula $8\cdot\underset{X}{3}\cdot\underset{O}{6}\cdot\underset{X}{2}\cdot\underset{O}{5}\cdot\underset{X}{1}=1,440$
+\end_inset
+
+ )נקבע את רצף הניצחון של איקס.
+ יש לכך 
 \numeric on
-\bar default
-\strikeout default
-\xout default
-\uuline default
-\uwave default
-\noun default
-\color inherit
-250
+8
 \family roman
 \series medium
 \shape up
@@ -433,10 +416,1627 @@ status open
 \uwave default
 \noun default
 \color inherit
-אלף.....
- בסקין ימשיך.
+אפשרויות.
+ ואז
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+3
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות למיקום הראשון של איקס,
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+6
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות למיקום הראשון של עיגול וכו'(.
 \end_layout
 
+\begin_layout Enumerate
+איקס מנצח תוך 
+\begin_inset Formula $4$
+\end_inset
+
+ מהלכים: 
+\begin_inset Formula $8\cdot6\cdot\underset{X}{4}\cdot\underset{O}{5}\cdot\underset{X}{3}\cdot\underset{O}{4}\cdot\underset{X}{2}\cdot\underset{O}{3}\cdot\underset{X}{1}=69,120$
+\end_inset
+
+ )נקבע את רצף הניצחון של איקס.
+ יש לכך 
+\numeric on
+8
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות.
+ כמו כן נקבע את המיקום של האיקס הנוסף.
+ יש לכך
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+6
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות.
+ ואז
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+4
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות למיקום הראשון של איקס,
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+5
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות למיקום הראשון של עיגול וכו'(.
+ 
+\begin_inset Newline newline
+\end_inset
+
+נחסר את המשחקים שבהם איקס מנצח לפני המהלך האחרון: 
+\begin_inset Formula $8\cdot\underset{X}{3}\cdot\underset{O}{6}\cdot\underset{X}{2}\cdot\underset{O}{5}\cdot\underset{X}{1}\cdot\underset{O}{4}\cdot\underset{X}{3}=17,280$
+\end_inset
+
+ )נקבע את רצף הניצחון של איקס.
+ יש לכך 
+\numeric on
+8
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות.
+ ואז איקס קודם כול ממקם את הרצף, אז
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+3
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות למיקום הראשון של איקס,
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+6
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות למיקום הראשון של עיגול וכו', ובסוף עוד
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+3
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות למיקום האחרון של איקס(.
+ 
+\begin_inset Newline newline
+\end_inset
+
+אז סה
+\begin_inset Quotes erd
+\end_inset
+
+כ: 
+\begin_inset Formula 
+\[
+69,120-17,280=51,840
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+איקס מנצח תוך 
+\begin_inset Formula $5$
+\end_inset
+
+ מהלכים: 
+\begin_inset Formula $8\cdot15\cdot\underset{X}{5}\cdot\underset{O}{4}\cdot\underset{X}{4}\cdot\underset{O}{3}\cdot\underset{X}{3}\cdot\underset{O}{2}\cdot\underset{X}{2}\cdot\underset{O}{1}\cdot\underset{X}{1}=345,600$
+\end_inset
+
+ )נקבע את רצף הניצחון של איקס.
+ יש לכך 
+\numeric on
+8
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות.
+ כמו כן נקבע את המיקום של שני האיקסים הנוספים.
+ יש לכך
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+
+\begin_inset Formula $\left(\begin{matrix}6\\
+2
+\end{matrix}\right)=15$
+\end_inset
+
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות.
+ ואז
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+5
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות למיקום הראשון של איקס,
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+4
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות למיקום הראשון של עיגול וכו'(.
+ 
+\begin_inset Newline newline
+\end_inset
+
+נחסר את המשחקים שבהם איקס מנצח לפני המהלך האחרון: 
+\begin_inset Formula $8\cdot\underset{X}{3}\cdot\underset{O}{6}\cdot\underset{X}{2}\cdot\underset{O}{5}\cdot\underset{X}{1}\cdot\underset{O}{4}\cdot\underset{X}{4}\cdot\underset{O}{3}\cdot\underset{X}{2}=138,240$
+\end_inset
+
+ )נקבע את רצף הניצחון של איקס.
+ יש לכך 
+\numeric on
+8
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות.
+ ואז איקס קודם כול ממקם את הרצף, אז
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+3
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות למיקום הראשון של איקס,
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+6
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות למיקום הראשון של עיגול וכו', ולאחר מיקום הרצף של איקס, ניתן למקם
+ את שני האיקסים הנוספים בצורה חופשית(.
+\begin_inset Newline newline
+\end_inset
+
+אז סה
+\begin_inset Quotes erd
+\end_inset
+
+כ: 
+\begin_inset Formula 
+\[
+345,600-138,240=207,360
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+עיגול מנצח:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+עיגול מנצח תוך 
+\begin_inset Formula $3$
+\end_inset
+
+ מהלכים: 
+\begin_inset Formula 
+\[
+8\cdot\underset{X}{6}\cdot\underset{O}{3}\cdot\underset{X}{5}\cdot\underset{O}{2}\cdot\underset{X}{4}\cdot\underset{O}{1}\cdot\underset{X}{3}=17,280
+\]
+
+\end_inset
+
+ )נקבע את רצף הניצחון של עיגול.
+ יש לכך 
+\numeric on
+8
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות.
+ ואז
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+3
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות למיקום הראשון של איקס,
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+6
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות למיקום הראשון של עיגול וכו'(.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+עיגול מנצח תוך 
+\begin_inset Formula $4$
+\end_inset
+
+ מהלכים: 
+\begin_inset Formula $8\cdot6\cdot\underset{X}{5}\cdot\underset{O}{4}\cdot\underset{X}{4}\cdot\underset{O}{3}\cdot\underset{X}{3}\cdot\underset{O}{2}\cdot\underset{X}{2}\cdot\underset{O}{1}=138,240$
+\end_inset
+
+ )נקבע את רצף הניצחון של עיגול.
+ יש לכך 
+\numeric on
+8
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות.
+ כמו כן נקבע את המיקום של העיגול הנוסף.
+ יש לכך
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+6
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות.
+ ואז
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+4
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות למיקום הראשון של איקס,
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+5
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות למיקום הראשון של עיגול וכו'(.
+ 
+\begin_inset Newline newline
+\end_inset
+
+נחסר את מספר המשחקים שבהם עיגול מנצח לפני המהלך האחרון: 
+\begin_inset Formula $8\cdot\underset{X}{6}\cdot\underset{O}{3}\cdot\underset{X}{5}\cdot\underset{O}{2}\cdot\underset{X}{4}\cdot\underset{O}{1}\cdot\underset{X}{3}\cdot\underset{O}{2}=34,560$
+\end_inset
+
+ )נקבע את רצף הניצחון של עיגול.
+ יש לכך 
+\numeric on
+8
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות.
+ ואז עיגול קודם כול ממקם את הרצף, אז
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+3
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות למיקום הראשון של עיגול,
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+6
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות למיקום הראשון של עיגול וכו', ובסוף עוד
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+2
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+אפשרויות למיקום האחרון של עיגול(.
+ 
+\begin_inset Newline newline
+\end_inset
+
+אז סה
+\begin_inset Quotes erd
+\end_inset
+
+כ: 
+\begin_inset Formula 
+\[
+138,240-34,560=103,680
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+תיקו: נבחר את מיקומי האיקסים כך שאין רצף מנצח: 
+\begin_inset Formula $\left(\begin{matrix}9\\
+5
+\end{matrix}\right)-8\left(\begin{matrix}6\\
+2
+\end{matrix}\right)$
+\end_inset
+
+: יש 
+\begin_inset Formula $\left(\begin{matrix}9\\
+5
+\end{matrix}\right)$
+\end_inset
+
+ אפשרויות סה
+\begin_inset Quotes erd
+\end_inset
+
+כ.
+ יש
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+8
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\numeric off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+מיקומים אפשריים לרצף, ולכל מיקום של רצף, צריך לבחור את המיקום של שני האיקסים
+ הנוספים.
+ ולבסוף יחד עם קביעת הסדר של האיקסים והעיגולים, נקבל: 
+\begin_inset Formula 
+\[
+\left(\left(\begin{matrix}9\\
+5
+\end{matrix}\right)-8\left(\begin{matrix}6\\
+2
+\end{matrix}\right)\right)5!4!=17,280
+\]
+
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+ולבסוף ההערכה היא )נעגל כלפי מטה כדי לקבל הערכה טובה יותר, הרי לא חיסרנו
+ חלק מהמקרים שאינם קבילים(:
+\begin_inset Formula 
+\[
+\approx50,000+200,000+17,000+100,000+17,000\approx
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\approx380,000
+\]
+
+\end_inset
+
+משחקים.
+\end_layout
+
+\end_deeper
 \begin_layout Enumerate
 הרי העץ:
 \begin_inset Newline newline
@@ -597,40 +2197,11 @@ status open
 
 \end_layout
 
-\begin_layout Part*
+\begin_layout Section
 ייצוג ידע
 \end_layout
 
-\begin_layout Section*
-
-\numeric on
-1.1
-\family roman
-\series bold
-\shape up
-\size larger
-\emph off
-\numeric off
-\bar no
-\strikeout off
-\xout off
-\uuline off
-\uwave off
-\noun off
-\color none
- 
-\family default
-\series default
-\shape default
-\size default
-\emph default
-\bar default
-\strikeout default
-\xout default
-\uuline default
-\uwave default
-\noun default
-\color inherit
+\begin_layout Subsection
 המרה לצורת 
 \begin_inset Formula $\text{clause}$
 \end_inset
@@ -789,6 +2360,271 @@ status open
 \begin_inset Formula 
 \[
 T
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+אנגלית 
+\begin_inset Formula $\la$
+\end_inset
+
+ לוגיקה
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\text{Neither the storm blast nor the flood did any damage to the house.}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\exists x,y,z\left(Flood\left(x\right)\land Storm\left(y\right)\land House\left(z\right)\land\lnot Damaged\left(z\right)\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\text{Drivers should neither drive over 65 miles per hour nor cross the red light, or they will get a ticket.}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\forall x\left[\left(Driver\left(x\right)\land\left(FasterThan65\left(x\right)\lor CrossRedLight\left(x\right)\right)\right)\implies Ticket(x)\right]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+המאחד הכללי ביותר
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset Formula $Color\left(Hat\left(Postman\right),Blue\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $Color\left(Hat\left(y\right),x\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{Unify\left(\left[Color\left(Hat\left(Postman\right),Blue\right)\right],\left[Color\left(Hat\left(y\right),x\right)\right]\right)}=\left\{ y/Postman,x/Blue\right\} 
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset Formula $R\left(F\left(y\right),y,x\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $R\left(x,F\left(A\right),F\left(v\right)\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{Unify\left(\left[R\left(x,F\left(A\right),F\left(v\right)\right)\right],\left[R\left(F\left(y\right),y,x\right)\right]\right)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\begin{cases}
+R\left(F\left(y\right),y,x\right)\\
+R\left(x,F\left(A\right),F\left(v\right)\right)
+\end{cases}
+\]
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $fail$
+\end_inset
+
+ כי ב- 
+\begin_inset Formula $b$
+\end_inset
+
+ אי-אפשר להחליף 
+\begin_inset Formula $x$
+\end_inset
+
+ ב- 
+\begin_inset Formula $F\left(y\right)$
+\end_inset
+
+ כי אז גם ב-
+\begin_inset Formula $a$
+\end_inset
+
+ יתבצע החילוף אבל 
+\begin_inset Formula $F\left(y\right)$
+\end_inset
+
+ כבר נמצא שם וגם אי-אפשר להחליף 
+\begin_inset Formula $F\left(y\right)$
+\end_inset
+
+ ב-
+\begin_inset Formula $x$
+\end_inset
+
+ כי 
+\begin_inset Formula $x$
+\end_inset
+
+ כבר נמצא ב-
+\begin_inset Formula $a$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset Formula $Loves\left(x,y\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $Loves\left(y,x\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{Unify\left(\left[Loves\left(x,y\right)\right],\left[Loves\left(y,x\right)\right]\right)}=\left\{ y/x,x/y\right\} 
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+רזולוציה
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\left\{ p\left(a\right),q\left(a\right)\right\} ,\left\{ \lnot p\left(x\right),r\left(x\right)\right\} ,\left\{ \lnot q\left(a\right)\right\} 
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\forall x\ p\left(x\right)\Ra q\left(x\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\[
+\forall x\ \left(\left(\left(p\left(x\right)\Ra q\left(x\right)\right)\Ra p\left(x\right)\right)\Ra p\left(x\right)\right)
 \]
 
 \end_inset

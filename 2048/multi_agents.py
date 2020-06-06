@@ -1,5 +1,8 @@
 import numpy as np
 import abc
+
+from gevent.resolver.cares import ares_host_result
+
 import util
 from game import Agent, Action
 import math
@@ -318,6 +321,22 @@ def biggest_num_in_corner(board):
            np.all(location == [h - 1, 0]) or np.all(location == [h - 1, w - 1]):
             return board.max()
     return 0
+
+
+def biggest_nums_on_edges(board):
+    flattened_board = np.unique(board.flatten())
+    h, w = board.shape
+    biggest_nums = flattened_board[np.argsort(flattened_board)[-h:]]
+    cols_and_rows = np.array([board[0], board[-1], board[:, 0], board[:, -1]])
+
+    found = False
+    found_rows = []
+    for row in cols_and_rows:
+        found |= np.isin(row, biggest_nums).all()
+        if np.isin(row, biggest_nums).all():
+            found_rows.append(row)
+
+    return sum(biggest_nums) if found else 0
 
 
 def better_evaluation_function(current_game_state):

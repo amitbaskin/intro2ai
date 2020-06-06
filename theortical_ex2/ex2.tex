@@ -1,0 +1,455 @@
+%% LyX 2.3.1-1 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english,hebrew]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9,cp1255]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,lmargin=2cm,rmargin=2cm}
+\usepackage{amsmath}
+\usepackage{cancel}
+\usepackage{graphicx}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% A simple dot to overcome graphicx limitations
+\newcommand{\lyxdot}{.}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\usepackage{theorem}
+\theorembodyfont{\upshape}
+\newtheorem{theorem}{\R{משפט}}[section]
+\AtBeginDocument{\make@lr\thetheorem}
+
+% The following chunk fixes export with XeTeX.
+% It is needed because polyglossia is used by default
+% and \make@lr is only defined by babel.
+\@ifundefined{make@lr}
+{\def\make@lr#1{\begingroup
+    \toks@=\expandafter{#1}%
+    \edef\x{\endgroup
+  \def\noexpand#1{\noexpand\@number{\the\toks@}}}%
+  \x}}{\relax}
+
+\makeatother
+
+\usepackage{babel}
+\begin{document}
+\include{../../shortcuts}
+\title{מבוא לבינה מלאכותית - תרגיל תיאורתי {\beginL 2\endL}}
+\author{רון יצחק {\beginL 311604938\endL}, עמית בסקין {\beginL 312259013\endL}}
+\maketitle
+
+\subsection{מינימקס על עץ}
+
+\noindent\begin{minipage}[t]{1\columnwidth}%
+\begin{center}
+\L{\includegraphics[scale=0.6]{q0\lyxdot 1}}
+\par\end{center}
+\begin{center}
+ולכן על האלגוריתם לבחור ב-\L{$\text{right}$}.
+\par\end{center}%
+\end{minipage}
+
+\subsection{אלפא בטא על עץ}
+\begin{enumerate}
+\item הרי הגרף:\\
+\noindent\begin{minipage}[t]{1\columnwidth}%
+\begin{center}
+\L{\includegraphics[scale=0.6]{q0\lyxdot 2}}
+\par\end{center}%
+\end{minipage}
+\item ולכן על האלגוריתם לבחור ב-\L{$\text{right}$}. באופן כללי, האלגוריתם
+עובד באותה הצורה, הוא פשוט חוסך בדיקות מיותרות.
+\end{enumerate}
+
+\subsection{אלפא בטא אופטימיזאציה על עץ}
+\begin{enumerate}
+\item הרי הגרף:\\
+\noindent\begin{minipage}[t]{1\columnwidth}%
+\begin{center}
+\L{\includegraphics[scale=0.7]{q0\lyxdot 3}}\\
+הפכנו גם את \L{$B,C$} וגם את \L{$G,F$} ואת \L{$E,D$}. זאת מכיוון
+שרצינו שהתור של \L{$MAX$} ייראה קודם את הענף שבו יש את הערך המקסימאלי,\\
+ובאותה הצורה רצינו שהתור של \L{$MIN$} ייראה קודם את הענף שבו יש את
+הערך המינימאלי.
+\par\end{center}%
+\end{minipage}
+\item {\beginL 11\endL}.
+\end{enumerate}
+
+\subsection{איקס עיגול}
+\begin{enumerate}
+\item נחלק למקרים )מאחר שמדובר רק בהערכה, לא נחסר מצבים שבהם גם עיגול וגם
+איקס מנצחים )גורם יחסית זניח בחישוב((: 
+\begin{enumerate}
+\item איקס מנצח:
+\begin{enumerate}
+\item )חישוב זניח שנקזז בסוף עם מה שלא חיסרנו(: איקס מנצח תוך \L{$3$} מהלכים:
+\L{$8\cdot\underset{X}{3}\cdot\underset{O}{6}\cdot\underset{X}{2}\cdot\underset{O}{5}\cdot\underset{X}{1}=1,440$}
+)נקבע את רצף הניצחון של איקס. יש לכך {\beginL 8\endL} אפשרויות. ואז
+{\beginL 3\endL} אפשרויות למיקום הראשון של איקס, {\beginL 6\endL}
+אפשרויות למיקום הראשון של עיגול וכו'(.
+\item איקס מנצח תוך \L{$4$} מהלכים: \L{$8\cdot6\cdot\underset{X}{4}\cdot\underset{O}{5}\cdot\underset{X}{3}\cdot\underset{O}{4}\cdot\underset{X}{2}\cdot\underset{O}{3}\cdot\underset{X}{1}=69,120$}
+)נקבע את רצף הניצחון של איקס. יש לכך {\beginL 8\endL} אפשרויות. כמו
+כן נקבע את המיקום של האיקס הנוסף. יש לכך {\beginL 6\endL} אפשרויות.
+ואז {\beginL 4\endL} אפשרויות למיקום הראשון של איקס, {\beginL 5\endL}
+אפשרויות למיקום הראשון של עיגול וכו'(. \\
+נחסר את המשחקים שבהם איקס מנצח לפני המהלך האחרון: \L{$8\cdot\underset{X}{3}\cdot\underset{O}{6}\cdot\underset{X}{2}\cdot\underset{O}{5}\cdot\underset{X}{1}\cdot\underset{O}{4}\cdot\underset{X}{3}=17,280$}
+)נקבע את רצף הניצחון של איקס. יש לכך {\beginL 8\endL} אפשרויות. ואז
+איקס קודם כול ממקם את הרצף, אז {\beginL 3\endL} אפשרויות למיקום הראשון
+של איקס, {\beginL 6\endL} אפשרויות למיקום הראשון של עיגול וכו', ובסוף
+עוד {\beginL 3\endL} אפשרויות למיקום האחרון של איקס(. \\
+אז סה\textquotedblleft כ: \L{
+\[
+69,120-17,280=51,840
+\]
+}
+\item איקס מנצח תוך \L{$5$} מהלכים: \L{$8\cdot15\cdot\underset{X}{5}\cdot\underset{O}{4}\cdot\underset{X}{4}\cdot\underset{O}{3}\cdot\underset{X}{3}\cdot\underset{O}{2}\cdot\underset{X}{2}\cdot\underset{O}{1}\cdot\underset{X}{1}=345,600$}
+)נקבע את רצף הניצחון של איקס. יש לכך {\beginL 8\endL} אפשרויות. כמו
+כן נקבע את המיקום של שני האיקסים הנוספים. יש לכך {\beginL \L{$\left(\begin{matrix}6\\
+2
+\end{matrix}\right)=15$}\endL} אפשרויות. ואז {\beginL 5\endL} אפשרויות למיקום הראשון של איקס,
+{\beginL 4\endL} אפשרויות למיקום הראשון של עיגול וכו'(. \\
+נחסר את המשחקים שבהם איקס מנצח לפני המהלך האחרון: \L{$8\cdot\underset{X}{3}\cdot\underset{O}{6}\cdot\underset{X}{2}\cdot\underset{O}{5}\cdot\underset{X}{1}\cdot\underset{O}{4}\cdot\underset{X}{4}\cdot\underset{O}{3}\cdot\underset{X}{2}=138,240$}
+)נקבע את רצף הניצחון של איקס. יש לכך {\beginL 8\endL} אפשרויות. ואז
+איקס קודם כול ממקם את הרצף, אז {\beginL 3\endL} אפשרויות למיקום הראשון
+של איקס, {\beginL 6\endL} אפשרויות למיקום הראשון של עיגול וכו', ולאחר
+מיקום הרצף של איקס, ניתן למקם את שני האיקסים הנוספים בצורה חופשית(.\\
+אז סה\textquotedblleft כ: \L{
+\[
+345,600-138,240=207,360
+\]
+}
+\end{enumerate}
+\item עיגול מנצח:
+\begin{enumerate}
+\item עיגול מנצח תוך \L{$3$} מהלכים: \L{
+\[
+8\cdot\underset{X}{6}\cdot\underset{O}{3}\cdot\underset{X}{5}\cdot\underset{O}{2}\cdot\underset{X}{4}\cdot\underset{O}{1}\cdot\underset{X}{3}=17,280
+\]
+} )נקבע את רצף הניצחון של עיגול. יש לכך {\beginL 8\endL} אפשרויות.
+ואז {\beginL 3\endL} אפשרויות למיקום הראשון של איקס, {\beginL 6\endL}
+אפשרויות למיקום הראשון של עיגול וכו'(.\\
+\item עיגול מנצח תוך \L{$4$} מהלכים: \L{$8\cdot6\cdot\underset{X}{5}\cdot\underset{O}{4}\cdot\underset{X}{4}\cdot\underset{O}{3}\cdot\underset{X}{3}\cdot\underset{O}{2}\cdot\underset{X}{2}\cdot\underset{O}{1}=138,240$}
+)נקבע את רצף הניצחון של עיגול. יש לכך {\beginL 8\endL} אפשרויות. כמו
+כן נקבע את המיקום של העיגול הנוסף. יש לכך {\beginL 6\endL} אפשרויות.
+ואז {\beginL 4\endL} אפשרויות למיקום הראשון של איקס, {\beginL 5\endL}
+אפשרויות למיקום הראשון של עיגול וכו'(. \\
+נחסר את מספר המשחקים שבהם עיגול מנצח לפני המהלך האחרון: \L{$8\cdot\underset{X}{6}\cdot\underset{O}{3}\cdot\underset{X}{5}\cdot\underset{O}{2}\cdot\underset{X}{4}\cdot\underset{O}{1}\cdot\underset{X}{3}\cdot\underset{O}{2}=34,560$}
+)נקבע את רצף הניצחון של עיגול. יש לכך {\beginL 8\endL} אפשרויות. ואז
+עיגול קודם כול ממקם את הרצף, אז {\beginL 3\endL} אפשרויות למיקום הראשון
+של עיגול, {\beginL 6\endL} אפשרויות למיקום הראשון של עיגול וכו', ובסוף
+עוד {\beginL 2\endL} אפשרויות למיקום האחרון של עיגול(. \\
+אז סה\textquotedblleft כ: \L{
+\[
+138,240-34,560=103,680
+\]
+}
+\end{enumerate}
+\item תיקו: נבחר את מיקומי האיקסים כך שאין רצף מנצח: \L{$\left(\begin{matrix}9\\
+5
+\end{matrix}\right)-8\left(\begin{matrix}6\\
+2
+\end{matrix}\right)$}: יש \L{$\left(\begin{matrix}9\\
+5
+\end{matrix}\right)$} אפשרויות סה\textquotedblleft כ. יש {\beginL 8\endL} מיקומים אפשריים
+לרצף, ולכל מיקום של רצף, צריך לבחור את המיקום של שני האיקסים הנוספים.
+ולבסוף יחד עם קביעת הסדר של האיקסים והעיגולים, נקבל: \L{
+\[
+\left(\left(\begin{matrix}9\\
+5
+\end{matrix}\right)-8\left(\begin{matrix}6\\
+2
+\end{matrix}\right)\right)5!4!=17,280
+\]
+} \\
+ולבסוף ההערכה היא )נעגל כלפי מטה כדי לקבל הערכה טובה יותר, הרי לא
+חיסרנו חלק מהמקרים שאינם קבילים(:\L{
+\[
+\approx50,000+200,000+17,000+100,000+17,000\approx
+\]
+}\L{
+\[
+\approx380,000
+\]
+}משחקים.
+\end{enumerate}
+\item הרי העץ:\\
+\noindent\begin{minipage}[t]{1\columnwidth}%
+\begin{center}
+\L{\includegraphics[scale=0.5]{q0\lyxdot 4}}
+\par\end{center}%
+\end{minipage}
+\item הרי העץ:\\
+\noindent\begin{minipage}[t]{1\columnwidth}%
+\begin{center}
+\L{\includegraphics[scale=0.5]{q0\lyxdot 4\lyxdot 2}}
+\par\end{center}%
+\end{minipage}
+\item הרי העץ:\\
+\noindent\begin{minipage}[t]{1\columnwidth}%
+\begin{center}
+\L{\includegraphics[scale=0.5]{q0\lyxdot 4\lyxdot 3}}
+\par\end{center}%
+\end{minipage}
+\item הרי העץ:\\
+\noindent\begin{minipage}[t]{1\columnwidth}%
+\begin{center}
+\L{\includegraphics[scale=0.7]{q0\lyxdot 4\lyxdot 4}}
+\par\end{center}%
+\end{minipage}
+\end{enumerate}
+
+\section{ייצוג ידע}
+
+\subsection{המרה לצורת \L{$\text{clause}$}}
+\begin{enumerate}
+\item \L{
+\[
+\forall x\ :\ \left[P_{1}\left(x\right)\land P_{2}\left(x,A\right)\right]\Ra\left[P_{3}\left(x,B\right)\lor\left(\forall y\ :\ \exists z\ :\ P_{3}\left(y,z\right)\Ra P_{4}\left(x,y\right)\right)\right]
+\]
+}\L{
+\[
+\forall x\ :\ \left[P_{1}\left(x\right)\land P_{2}\left(x,A\right)\right]\Ra\left[P_{3}\left(x,B\right)\lor\left(\forall y\ :\ P_{3}\left(y,G\left(y\right)\right)\Ra P_{4}\left(x,y\right)\right)\right]
+\]
+}\L{
+\[
+\left[P_{1}\left(x\right)\land P_{2}\left(x,A\right)\right]\Ra\left[P_{3}\left(x,B\right)\lor\left(P_{3}\left(y,G\left(y\right)\right)\Ra P_{4}\left(x,y\right)\right)\right]
+\]
+}\L{
+\[
+\left[P_{1}\left(x\right)\land P_{2}\left(x,A\right)\right]\Ra\left[P_{3}\left(x,B\right)\lor\left(\lnot P_{3}\left(y,G\left(y\right)\right)\lor P_{4}\left(x,y\right)\right)\right]
+\]
+}\L{
+\[
+\left[P_{1}\left(x\right)\land P_{2}\left(x,A\right)\right]\Ra\left[P_{3}\left(x,B\right)\lor\lnot P_{3}\left(y,G\left(y\right)\right)\lor P_{4}\left(x,y\right)\right]
+\]
+}\L{
+\[
+\lnot\left[P_{1}\left(x\right)\land P_{2}\left(x,A\right)\right]\lor\left[P_{3}\left(x,B\right)\lor\lnot P_{3}\left(y,G\left(y\right)\right)\lor P_{4}\left(x,y\right)\right]
+\]
+}\L{
+\[
+\left[\lnot P_{1}\left(x\right)\lor\lnot P_{2}\left(x,A\right)\right]\lor\left[P_{3}\left(x,B\right)\lor\lnot P_{3}\left(y,G\left(y\right)\right)\lor P_{4}\left(x,y\right)\right]
+\]
+}\L{
+\[
+\lnot P_{1}\left(x\right)\lor\lnot P_{2}\left(x,A\right)\lor P_{3}\left(x,B\right)\lor\lnot P_{3}\left(y,G\left(y\right)\right)\lor P_{4}\left(x,y\right)
+\]
+}\L{
+\[
+\left\{ \lnot P_{1}\left(x\right),\lnot P_{2}\left(x,A\right),P_{3}\left(x,B\right),\lnot P_{3}\left(y,G\left(y\right)\right),P_{4}\left(x,y\right)\right\} 
+\]
+}
+\item \L{
+\[
+\left(P\Ra Q\right)\Ra\left(\left(Q\Ra R\right)\Ra\left(P\Ra R\right)\right)
+\]
+}\L{
+\[
+\left(\lnot P\lor Q\right)\Ra\left(\left(\lnot Q\lor R\right)\Ra\left(\lnot P\lor R\right)\right)
+\]
+}\L{
+\[
+\left(\lnot P\lor Q\right)\Ra\left(\lnot\left(\lnot Q\lor R\right)\lor\left(\lnot P\lor R\right)\right)
+\]
+}\L{
+\[
+\left(\lnot P\lor Q\right)\Ra\left(\left(Q\land\lnot R\right)\lor\left(\lnot P\lor R\right)\right)
+\]
+}\L{
+\[
+\lnot\left(\lnot P\lor Q\right)\lor\left(\left(Q\land\lnot R\right)\lor\left(\lnot P\lor R\right)\right)
+\]
+}\L{
+\[
+\left(P\land\lnot Q\right)\lor\left(\left(Q\land\lnot R\right)\lor\left(\lnot P\lor R\right)\right)
+\]
+}\L{
+\[
+\left(P\land\lnot Q\right)\lor\left(\left(Q\lor\lnot P\lor R\right)\land\left(\cancel{\lnot R}\lor\lnot P\lor\cancel{R}\right)\right)
+\]
+}\L{
+\[
+\left(P\land\lnot Q\right)\lor\left(Q\lor\lnot P\lor R\right)
+\]
+}\L{
+\[
+\left(\cancel{P}\lor Q\lor\cancel{\lnot P}\lor R\right)\land\left(\cancel{\lnot Q}\lor\cancel{Q}\lor\lnot P\lor R\right)
+\]
+}\L{
+\[
+T\land T
+\]
+}\L{
+\[
+T
+\]
+}
+\end{enumerate}
+
+\subsection{אנגלית \L{$\protect\la$} לוגיקה}
+\begin{enumerate}
+\item \L{
+\[
+\text{Neither the storm blast nor the flood did any damage to the house.}
+\]
+}\L{
+\[
+\exists x,y,z\left(Flood\left(x\right)\land Storm\left(y\right)\land House\left(z\right)\land\lnot Damaged\left(z\right)\right)
+\]
+}
+\item \L{
+\[
+\text{Drivers should neither drive over 65 miles per hour nor cross the red light, or they will get a ticket.}
+\]
+}\L{
+\[
+\forall x\left[\left(Driver\left(x\right)\land\left(FasterThan65\left(x\right)\lor CrossRedLight\left(x\right)\right)\right)\implies Ticket(x)\right]
+\]
+}
+\end{enumerate}
+
+\subsection{המאחד הכללי ביותר}
+\begin{enumerate}
+\item 
+\begin{enumerate}
+\item \L{$Color\left(Hat\left(Postman\right),Blue\right)$}
+\item \L{$Color\left(Hat\left(y\right),x\right)$}
+\end{enumerate}
+\L{
+\[
+\text{Unify\ensuremath{\left(\left[Color\left(Hat\left(Postman\right),Blue\right)\right],\left[Color\left(Hat\left(y\right),x\right)\right]\right)}}=\left\{ y/Postman,x/Blue\right\} 
+\]
+}
+\item 
+\begin{enumerate}
+\item \L{$R\left(F\left(y\right),y,x\right)$}
+\item \L{$R\left(x,F\left(A\right),F\left(v\right)\right)$}
+\end{enumerate}
+\L{
+\[
+\text{Unify\ensuremath{\left(\left[R\left(x,F\left(A\right),F\left(v\right)\right)\right],\left[R\left(F\left(y\right),y,x\right)\right]\right)}}
+\]
+}
+
+\L{
+\[
+\begin{cases}
+R\left(F\left(y\right),y,x\right)\\
+R\left(x,F\left(A\right),F\left(v\right)\right)
+\end{cases}
+\]
+}\L{$fail$} כי ב-\L{$b$} אי-אפשר להחליף \L{$x$} ב- \L{$F\left(y\right)$}
+כי אז גם ב-\L{$a$} יתבצע החילוף אבל \L{$F\left(y\right)$} כבר נמצא
+שם וגם אי-אפשר להחליף \L{$F\left(y\right)$} ב-\L{$x$} כי \L{$x$}
+כבר נמצא ב-\L{$a$}.
+\item 
+\begin{enumerate}
+\item \L{$Loves\left(x,y\right)$}
+\item \L{$Loves\left(y,x\right)$}
+\end{enumerate}
+\L{
+\[
+\text{Unify\ensuremath{\left(\left[Loves\left(x,y\right)\right],\left[Loves\left(y,x\right)\right]\right)}}
+\]
+}\L{$fail$} כי ב-\L{$a$} אי-אפשר להחליף \L{$x$} ב- \L{$y$} כי \L{$y$}
+כבר נמצא שם וגם אי-אפשר להחליף \L{$y$} ב-\L{$x$} כי \L{$x$} כבר
+נמצא שם.\\
+אחרת נקבל \L{
+\[
+Loves\left(x,x\right)
+\]
+} או\L{
+\[
+Loves\left(y,y\right)
+\]
+}
+\end{enumerate}
+
+\subsection{רזולוציה}
+\begin{enumerate}
+\item \L{
+\[
+\left\{ p\left(a\right),q\left(a\right)\right\} ,\left\{ \lnot p\left(x\right),r\left(x\right)\right\} ,\left\{ \lnot q\left(a\right)\right\} 
+\]
+}\L{
+\[
+\left\{ p\left(a\right),q\left(a\right)\right\} ,\left\{ \lnot p\left(a\right),r\left(a\right)\right\} ,\left\{ \lnot q\left(a\right)\right\} 
+\]
+}\L{
+\[
+\left\{ r\left(a\right),q\left(a\right)\right\} ,\left\{ \lnot q\left(a\right)\right\} 
+\]
+}\L{
+\[
+\left\{ r\left(a\right),q\left(a\right)\right\} ,\left\{ \lnot q\left(a\right)\right\} 
+\]
+}\L{
+\[
+\left\{ r\left(a\right)\right\} 
+\]
+}
+\item \L{
+\[
+\forall x\ p\left(x\right)\Ra q\left(x\right)
+\]
+}\L{
+\[
+\lnot p\left(x\right)\lor q\left(x\right)
+\]
+}\L{
+\[
+\left(\forall x\ \lnot p\left(x\right)\right)\lor\left(\forall x\ q\left(x\right)\right)
+\]
+}\L{
+\[
+\forall x\ p\left(x\right)\Ra\forall x\ q\left(x\right)
+\]
+}
+\item \L{
+\[
+\forall x\ \left(\left(\left(p\left(x\right)\Ra q\left(x\right)\right)\Ra p\left(x\right)\right)\Ra p\left(x\right)\right)
+\]
+}\L{
+\[
+\left(\left(p\left(x\right)\Ra q\left(x\right)\right)\Ra p\left(x\right)\right)\Ra p\left(x\right)
+\]
+}\L{
+\[
+\left(\left(\lnot p\left(x\right)\lor q\left(x\right)\right)\Ra p\left(x\right)\right)\Ra p\left(x\right)
+\]
+}\L{
+\[
+\left(\lnot\left(\lnot p\left(x\right)\lor q\left(x\right)\right)\lor p\left(x\right)\right)\Ra p\left(x\right)
+\]
+}\L{
+\[
+\lnot\left(\lnot\left(\lnot p\left(x\right)\lor q\left(x\right)\right)\lor p\left(x\right)\right)\lor p\left(x\right)
+\]
+}\L{
+\[
+\lnot\left(\left(p\left(x\right)\land\lnot q\left(x\right)\right)\land\lnot p\left(x\right)\right)\lor p\left(x\right)
+\]
+}\L{
+\[
+\left(\lnot\left(p\left(x\right)\land\lnot q\left(x\right)\right)\lor p\left(x\right)\right)\lor p\left(x\right)
+\]
+}\L{
+\[
+\left(\left(\lnot p\left(x\right)\lor q\left(x\right)\right)\lor p\left(x\right)\right)\lor p\left(x\right)
+\]
+}\L{
+\[
+\cancel{\lnot p\left(x\right)}\lor q\left(x\right)\lor\cancel{p\left(x\right)}\lor p\left(x\right)
+\]
+}\L{
+\[
+T
+\]
+}
+\end{enumerate}
+
+\end{document}
