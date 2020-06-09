@@ -266,6 +266,8 @@ if __name__ == '__main__':
     plan = gp.graph_plan()
     elapsed = time.clock() - start
     if plan is not None:
+        for action in plan:
+            print(action.name)
         print("Plan found with %d actions in %.2f seconds" % (len([act for act in plan if not act.is_noop()]), elapsed))
     else:
         print("Could not find a plan in %.2f seconds" % elapsed)

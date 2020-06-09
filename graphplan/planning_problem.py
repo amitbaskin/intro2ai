@@ -41,13 +41,13 @@ class PlanningProblem:
         self.expanded = 0
 
     def get_start_state(self):
-        "*** YOUR CODE HERE ***"
+        return self.initialState
 
     def is_goal_state(self, state):
         """
-        Hint: you might want to take a look at goal_state_not_in_prop_payer function
+        Hint: you might want to take a look at goal_state_not_in_prop_layer function
         """
-        "*** YOUR CODE HERE ***"
+        return not self.goal_state_not_in_prop_layer(state)
 
     def get_successors(self, state):
         """
@@ -56,17 +56,25 @@ class PlanningProblem:
         successor to the current state, 'action' is the action
         required to get there, and 'step_cost' is the incremental
         cost of expanding to that successor, 1 in our case.
-        You might want to this function:
+        You might want to use this function:
         For a list / set of propositions l and action a,
         a.all_preconds_in_list(l) returns true if the preconditions of a are in l
 
         Note that a state *must* be hashable!! Therefore, you might want to represent a state as a frozenset
         """
         self.expanded += 1
-        "*** YOUR CODE HERE ***"
+        successor_triplets = []
+        for action in self.actions:
+            if action.all_preconds_in_list(state):
+                to_add = frozenset(action.get_add())
+                to_remove = frozenset(action.get_delete())
+                new_state = to_add.union(state).difference(to_remove)
+                successor_triplets.append((new_state, action, 1))
+
+        return successor_triplets
 
     @staticmethod
-    def get_cost_of_actions( actions):
+    def get_cost_of_actions(actions):
         return len(actions)
 
     def goal_state_not_in_prop_layer(self, propositions):
@@ -105,7 +113,23 @@ def max_level(state, planning_problem):
     pg_init = PlanGraphLevel()                   #create a new plan graph level (level is the action layer and the propositions layer)
     pg_init.set_proposition_layer(prop_layer_init)   #update the new plan graph level with the the proposition layer
     """
-    "*** YOUR CODE HERE ***"
+    prop_layer_init = PropositionLayer()          #create a new proposition layer
+    for prop in state:
+        prop_layer_init.add_proposition(prop)        #update the proposition layer with the propositions of the state
+    pg_init = PlanGraphLevel()                   #create a new plan graph level (level is the action layer and the propositions layer)
+    pg_init.set_proposition_layer(prop_layer_init)   #update the new plan graph level with the the proposition layer
+    graph = [pg_init]
+    level = 0
+
+    while not is_fixed(graph, level):
+        level += 1
+        pg_next = PlanGraphLevel()
+        pg_next.expand(graph[level - 1])
+        graph.append(pg_next)
+        if planning_problem.is_goal_state(state):
+            return level
+
+    return float('inf')
 
 
 def level_sum(state, planning_problem):
@@ -113,7 +137,33 @@ def level_sum(state, planning_problem):
     The heuristic value is the sum of sub-goals level they first appeared.
     If the goal is not reachable from the state your heuristic should return float('inf')
     """
-    "*** YOUR CODE HERE ***"
+    prop_layer_init = PropositionLayer()          #create a new proposition layer
+    for prop in state:
+        prop_layer_init.add_proposition(prop)        #update the proposition layer with the propositions of the state
+    pg_init = PlanGraphLevel()                   #create a new plan graph level (level is the action layer and the propositions layer)
+    pg_init.set_proposition_layer(prop_layer_init)   #update the new plan graph level with the the proposition layer
+    graph = [pg_init]
+    level = 0
+    sum = 0
+    seen_goals = set()
+
+    while not is_fixed(graph, level):
+        level += 1
+        pg_next = PlanGraphLevel()
+        pg_next.expand(graph[level - 1])
+        graph.append(pg_next)
+
+        propositions = frozenset(pg_next.get_proposition_layer().propositions)
+        goals = planning_problem.goal
+        goals_achieved = goals.intersection(propositions)
+        goals_from_this_level = goals_achieved.difference(frozenset(seen_goals))
+        seen_goals = seen_goals.union(goals_from_this_level)
+        sum += level * len(goals_from_this_level)
+
+        if planning_problem.is_goal_state(state):
+            return sum
+
+    return float('inf')
 
 
 def is_fixed(graph, level):
@@ -159,6 +209,8 @@ if __name__ == '__main__':
     plan = a_star_search(prob, heuristic)
     elapsed = time.clock() - start
     if plan is not None:
+        for action in plan:
+            print(action.name)
         print("Plan found with %d actions in %.2f seconds" % (len(plan), elapsed))
     else:
         print("Could not find a plan in %.2f seconds" % elapsed)
