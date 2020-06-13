@@ -105,6 +105,8 @@ def graph_search_pattern(fringe, problem, insertion_func, getter_func,
     visited_list.add(start_state)
     while fringe:
         node = getter_func(fringe)
+        if node is None:
+            break
         # Allows further search if got to state with less cost.
         # Uses the state itself as the key.
         if check_func(node, visited_list):
@@ -117,8 +119,7 @@ def graph_search_pattern(fringe, problem, insertion_func, getter_func,
             cur_successors = problem.get_successors(node.state)
             insertion_func(cur_successors, fringe, node)
 
-    print('no solution')
-    exit()
+    return None
 
 
 def depth_first_search(problem):
@@ -218,11 +219,10 @@ def a_star_search(problem, heuristic=null_heuristic):
             popped_node = curr_fringe.pop()
             return popped_node
         else:
-            print('no solution')
-            exit()
+            return None
 
     def astar_check_func(node, visited_list):
-        return node.state in visited_list
+        return node.state in visited_list if node is not None else None
         #and visited_list[node.state] <= node.astar_cost
 
     def astar_cost_func(node):
