@@ -72,7 +72,7 @@ def create_problem_file(problem_file_name_, n_, m_):
 
     problem_file.write(disks[-1] + "ON" + pegs[0] + " \n")
 
-    problem_file.write("Goal: ")
+    problem_file.write("Goal state: ")
     for i in range(n_ - 1):
         problem_file.write(disks[i] + "ON" + disks[i + 1] + " ")
     problem_file.write(disks[-1] + "ON" + pegs[-1] + " \n")
