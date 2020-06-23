@@ -37,17 +37,18 @@ class ValueIterationAgent(ValueEstimationAgent):
         self.mdp = mdp
         self.discount = discount
         self.iterations = iterations
-        self.values = util.Counter()  # A Counter is a dict with default 0
         self.epsilon = 0.01
+        self.values, self.policy = self.value_iteration()
 
     def value_iteration(self):
         states = self.mdp.getStates()
-        U_prime = self.values.copy()
-        policy = dict()
+        U_prime = util.Counter()
+        stop = True
+        iteration = 0
 
-        while True:
+        while iteration < self.iterations:
             U = U_prime.copy()
-            delta = 0
+            iteration += 1
 
             for state in states:
                 sums = util.Counter()
@@ -58,21 +59,34 @@ class ValueIterationAgent(ValueEstimationAgent):
                     for state_inner, prob in next_state_and_probs:
                         sums[action] += prob * U[state_inner]
                 if len(sums) == 0:
-                    max_action = None
                     max_value = 0
                 else:
-                    max_action = max(sums, key=sums.get)
                     max_value = max(sums.values())
                 U_prime[state] = self.mdp.getReward(state, None, None) + self.discount * max_value
-                policy[state] = max_action
 
-                if abs(U_prime[state] - U[state]) > delta:
-                    delta = abs(U_prime[state] - U[state])
+            for state in states:
+                if abs(U_prime[state] - U[state]) >= self.epsilon:
+                    stop = False
+                    break
 
-            if delta < self.epsilon * (1 - self.discount) / self.discount:
+            if stop:
                 break
+            else:
+                stop = True
 
-        return U, policy
+        policy = dict()
+        for state in states:
+            sums = util.Counter()
+            for action in self.mdp.getPossibleActions(state):
+                if state == "TERMINAL_STATE":
+                    continue
+                next_state_and_probs = self.mdp.getTransitionStatesAndProbs(state, action)
+                for state_inner, prob in next_state_and_probs:
+                    sums[action] += prob * U_prime[state_inner]
+            max_action = max(sums, key=sums.get) if len(sums) != 0 else None
+            policy[state] = max_action
+
+        return U_prime, policy
 
     def getValue(self, state):
         """
@@ -88,14 +102,18 @@ class ValueIterationAgent(ValueEstimationAgent):
           necessarily create this quantity and you may have
           to derive it on the fly.
         """
-        U, _ = self.value_iteration()
+        # sumP = 0
+        # for state_inner in self.mdp.getStates():
+        #     if state_inner == "TERMINAL_STATE":
+        #         continue
+        #     a = util.Counter(dict(self.mdp.getTransitionStatesAndProbs(state, action)))
+        #     sumP += a[state_inner] * self.values[state_inner]
+        # return self.mdp.getReward(state, action, None) + self.discount *
+        next_state_and_probs = self.mdp.getTransitionStatesAndProbs(state, action)
         sumP = 0
-        for state_inner in self.mdp.getStates():
-            if state_inner == "TERMINAL_STATE":
-                continue
-            a = util.Counter(dict(self.mdp.getTransitionStatesAndProbs(state, action)))
-            sumP += a[state_inner] * U[state_inner]
-        return self.mdp.getReward(state, action, None) + self.discount * sumP
+        for _, prob in next_state_and_probs:
+            sumP += prob
+        return self.mdp.getReward(state, None, None) + self.discount * sumP
 
     def getPolicy(self, state):
         """
@@ -105,8 +123,7 @@ class ValueIterationAgent(ValueEstimationAgent):
           there are no legal actions, which is the case at the
           terminal state, you should return None.
         """
-        _, policy = self.value_iteration()
-        return policy[state]
+        return self.policy[state]
 
     def getAction(self, state):
         "Returns the policy at the state (no exploration)."
